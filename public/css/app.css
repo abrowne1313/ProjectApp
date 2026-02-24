@@ -1,0 +1,391 @@
+/* =========================
+   GLOBAL STYLES
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #2c3e50;
+}
+
+/* =========================
+   HEADER / NAVIGATION
+========================= */
+
+.topbar {
+    background-color: #2c3e50;
+    padding: 15px 25px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-right {
+    margin-left: auto;
+    display: flex;
+    gap: 20px;
+}
+
+.topbar .nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.topbar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* =========================
+   MAIN CONTENT AREA
+========================= */
+
+main {
+    padding: 30px;
+}
+
+/* =========================
+   HEADINGS
+========================= */
+
+h1, h2, h3 {
+    color: #2c3e50;
+    margin-top: 0;
+}
+
+/* =========================
+   FORMS
+========================= */
+
+form {
+    background: #ffffff;
+    padding: 50px;
+    border-radius: 6px;
+    max-width: 1400px;
+    margin: 0 auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+input,
+select,
+button
+ {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+input,
+select {
+    border: 1px solid #ccc;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #2c3e50;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+    background-color: #2c3e50;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+
+button:hover {
+    background-color: #1f2f3a;
+}
+
+/* =========================
+   DELETE/CANCEL BUTTONS
+========================= */
+.btn-delete {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+/* =========================
+   ERROR MESSAGES
+========================= */
+
+.error,
+ul.error {
+    color: #c0392b;
+    background: #fdecea;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+/* =========================
+   LINKS
+========================= */
+
+a {
+    color: #2c3e50;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.logout-form {
+    margin: 0;
+    border-radius: 0px;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    /* padding: 6px 10px; */
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+
+.nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+
+.admin-tile {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    padding: 20px;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.admin-icon {
+    width: 180px;
+    height: auto;
+    border-radius: 12px;
+}
+
+.admin-label {
+    margin-top: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.nav-search {
+    display: flex;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.nav-search input,
+.nav-search select {
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.nav-search button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.nav-search-wrapper {
+    position: relative;
+}
+
+#live-search {
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 220px;
+}
+
+.search-results {
+    position: absolute;
+    top: 38px;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-height: 250px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+}
+
+.search-results div {
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.search-results div:hover {
+    background: #f1f1f1;
+}
+
+.btn-edit {
+    background: #2980b9;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.btn-delete {
+    background: #c0392b;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-edit:hover,
+.btn-delete:hover {
+    opacity: 0.85;
+}
+
+/* Puts space between edit and delete class buttons */
+.action-buttons {
+    display: flex;
+    gap: 10px;             
+    align-items: center;
+}
+
+.action-buttons form {
+    margin: 0;              
+}
+
+
+/* Live search formatting*/
+#search-results {
+    list-style: none;
+    padding: 0;
+    margin-top: 5px;
+}
+
+#search-results li {
+    padding: 6px;
+    border-bottom: 1px solid #ddd;
+}
+
+#search-results li a {
+    text-decoration: none;
+    color: #2c3e50;
+    display: block;
+}
+
+#search-results li a:hover {
+    background: #ecf0f1;
+}
+
+
+/* Subejct tabs for HoD formatting */
+.nav-tabs.subject-tabs .nav-link.subject-tab {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    border-radius: 6px 6px 0 0;
+    margin-right: 6px;
+    border: 1px solid #bbdefb;
+}
+
+.nav-tabs.subject-tabs .nav-link.subject-tab:hover {
+    background-color: #bbdefb;
+    color: #0d47a1;
+}
+
+/* Active tab */
+.nav-tabs.subject-tabs .nav-link.subject-tab.active {
+    background-color: #0d47a1;
+    color: #ffffff !important;
+    font-weight: 600;
+    border-color: #0d47a1;
+}
+
+.topic-row {
+    display: flex;
+    gap: 10px; /* space between inputs */
+    margin-bottom: 8px;
+}
+
+.topic-row input {
+    flex: 1; /* makes both inputs equal width */
+}
+
+
+.score-input {
+    width: 70px;
+    text-align: center;
+    padding: 4px 6px;
+}
+
+th.rotate {
+    height: 140px;
+    width: 40px;
+    padding: 0;
+    vertical-align: bottom; 
+    position: relative;
+}
+
+th.rotate > div {
+    position: absolute;
+    top: 100%; /* anchor to the top of the score row */
+    left: 50%;
+    transform-origin: top left;
+    transform: rotate(-90deg) translate(0, -50%);
+    white-space: nowrap;
+}
+
+
+
