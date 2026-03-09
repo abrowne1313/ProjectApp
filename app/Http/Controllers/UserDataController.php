@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\UserData;
+use App\Models\Subject;
+use App\Models\Schemes;
+use App\Models\ClassLists;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -53,15 +56,43 @@ if (Auth::attempt(['UserEmail' => $request->UserEmail,
 /**
  * Function to show classes assigned to each teacher on opening of dashboard
  */
-public function index()
+public function index(Request $request)
 {
     $user = Auth::user();
-
+    $subjects = Subject::all();
     $classes = $user->classes; 
     $firstName = optional($user->userData)->FirstName;
+$hodSubject = Subject::where('HoD_Teacher_id', $user->id)->first();
 
-    return view('dashboard', compact('classes', 'firstName'));
+$departmentalClasses = collect();
+
+if ($user->user_type == 3 && $hodSubject) {
+    $departmentalClasses = ClassLists::where('Subject', $hodSubject->Subject)
+        ->orderBy('YearGroup')
+        ->get();
 }
+
+
+    $schemes = null;
+    $selectedSubject = null;
+
+    if ($request->subject_id) {
+        $selectedSubject = Subject::find($request->subject_id);
+        $schemes = Schemes::where('Subject_id', $request->subject_id)->get();
+    }
+
+    return view('dashboard', compact(
+        'classes',
+        'firstName',
+        'subjects',
+        'schemes',
+        'selectedSubject',
+        'departmentalClasses'
+    ));
+}
+
+
+
     /**
      * Admin controls (for /admin route).
      */
@@ -180,7 +211,44 @@ public function edit(UserData $user)
         return redirect()->route('userdata.index')->with('success', 'UserData deleted successfully.');
     }
 
+    // Controllers for user to change their own password
+     public function ChangeOwnPassword()
+    {
+        return view('ChangePassword');
+    }
 
+
+
+
+public function ChangeOwnPasswordPost(Request $request)
+{
+    // Validate input
+    $request->validate([
+        'oldpassword' => 'required',
+        'newpassword1' => 'required|min:6',
+        'newpassword2' => 'required|same:newpassword1',
+    ]);
+
+    // Get the logged-in user
+    $user = Auth::user();
+
+    // Check old password
+    if (!Hash::check($request->oldpassword, $user->password)) {
+        return back()->withErrors([
+            'oldpassword' => 'Existing password is incorrect.',
+        ]);
+    }
+
+    // Update password
+    $user->password = Hash::make($request->newpassword1);
+    $user->save();
+
+    
+    return redirect('/dashboard')->with('success', 'Password updated successfully!');
+}
+
+
+//Controllers for Admin to change any user password
     public function ChangeUserPasswordForm()
     {
         return view('admincontrols/ChangeUserPassword');
@@ -206,6 +274,10 @@ public function edit(UserData $user)
         return redirect()->back()->with('success', 'Password updated successfully!'); 
     }
 
-
+public function show()
+{
+    $user = auth()->user();
+    return view('UserProfile', compact('user'));
+}
 
 } 

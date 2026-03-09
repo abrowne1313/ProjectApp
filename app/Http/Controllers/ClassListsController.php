@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ClassLists;
 use App\Models\PupilData;
 use App\Models\PupilScores;
+use App\Models\PupilTarget;
 use App\Models\UserData;
 use App\Models\Subject;
 use App\Models\Schemes;
@@ -186,6 +187,7 @@ public function pupils($classId)
             'class' => $class,
             'topics' => collect(),
             'scores' => collect(),
+            'targets' => collect(),
             'availablePupils' => collect(),
         ]);
     }
@@ -201,14 +203,19 @@ public function pupils($classId)
 
     $topics = $scheme ? $scheme->topics : collect();
 
-    // ⭐ Load all existing scores for pupils in this class
+    // Load scores
     $scores = PupilScores::whereIn('Pupil_id', $class->pupils->pluck('id'))
         ->get()
-        ->groupBy(function ($score) {
-            return $score->Pupil_id . '-' . $score->Topic_id;
-        });
+        ->groupBy(fn($score) => $score->Pupil_id . '-' . $score->Topic_id);
 
-    // Pupils NOT already in this class
+    // LOAD TARGETS 
+    $targets = PupilTarget::whereIn('Pupil_id', $class->pupils->pluck('id'))
+        ->where('Subject_id', $subjectId)
+        ->where('YearGroup', $yearGroup)
+        ->get()
+        ->keyBy('Pupil_id');
+
+    // Pupils NOT in this class
     $availablePupils = PupilData::whereDoesntHave('classes', function ($q) use ($class) {
         $q->where('class_lists.id', $class->id);
     })
@@ -219,9 +226,11 @@ public function pupils($classId)
         'class' => $class,
         'topics' => $topics,
         'scores' => $scores,
+        'targets' => $targets,   
         'availablePupils' => $availablePupils,
     ]);
 }
+
 
 
 

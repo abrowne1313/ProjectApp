@@ -12,20 +12,16 @@ use App\Http\Controllers\SchemesController;
 use App\Http\Controllers\TopicsController;
 use App\Http\Controllers\PupilScoresController;
 use App\Http\Controllers\PupilTargetController;
+use App\Http\Controllers\RevisionListsController;
+use App\Http\Middleware\HodOnly;
 use App\Http\Middleware\AdminOnly;
 use Illuminate\Support\Facades\Auth;
 
+
+// ******************{{ CONTROLS FOR STANDARD USERS }}************************************
 Route::get('/', function () {
     return view('login');
 });
-
-
-Route::middleware(['auth', AdminOnly::class])->get('/admin', [UserDataController::class, 'AdminControls'])
-    ->name('AdminControls');
-
-
-
-
 Route::post('/logout', function (Request $request) {
     Auth::logout();
 
@@ -38,71 +34,120 @@ Route::post('/logout', function (Request $request) {
 
 
 Route::get('/login', [UserDataController::class, 'showLoginForm'])->name('login');
-// Route::get('/login', [UserDataController::class, 'login'])->name('login');
+
 Route::post('/login', [UserDataController::class, 'login'])->name('login.submit');
 
-
-
-  Route::middleware('auth')->get('/dashboard', [UserDataController::class, 'index'])
+Route::middleware(['auth'])->group(function () {
+  
+Route::get('/dashboard', [UserDataController::class, 'index'])
     ->name('dashboard');
 
-  Route::middleware('auth')->get('/classes/{class}', [ClassListsController::class, 'show'])
+Route::get('/classes/{class}', [ClassListsController::class, 'show'])
     ->name('classes.');
-  
-//Create new user tools- admin only
-Route::middleware(['auth', \App\Http\Middleware\AdminOnly::class])->group(function () {
+
+ Route::get('/changePassword', [UserDataController::class, 'ChangeOwnPassword']) 
+    ->name('ChangePassword' );
+
+Route::post('/ChangePassword', [UserDataController::class, 'ChangeOwnPasswordPost']) 
+    ->name('ChangePassword.submit');   
+
+Route::get('/class-pupil-list/{class}', [ClassListsController::class, 'pupils'])
+    ->name('class.pupils');
+
+
+Route::post('/class/{class}/pupil', [ClassListsController::class, 'addPupil'])
+    ->name('class.pupil.add');
+
+Route::delete('/class/{class}/pupil/{pupil}', [ClassListsController::class, 'removePupil'])
+    ->name('class.pupil.remove');
     
-Route::get('/createuser', [UserDataController::class, 'CreateUserForm'])->name('CreateUser');
 
-Route::post('/createuser', [UserDataController::class, 'CreateUserForm'])->name('CreateUser');
+Route::get('/live-search', [SearchController::class, 'live'])->middleware('auth')
+    ->name('live.search');   
+    //Pupil Scores
+Route::post('/class/{id}/scores/save', [PupilScoresController::class, 'saveScores']) 
+->name('class.scores.save');
+
+// Pupil overview route
+Route::get('/pupils/{pupil}/scores', [PupilScoresController::class, 'overview'])
+    ->name('pupil.scores.overview');
+
+// Get data for yeargroup and subjects
+Route::get('/pupils/{pupil}/scores/{year}/{subject}', [PupilScoresController::class, 'showYearSubject'])
+    ->name('pupil.scores.show');
+ 
+
+ //Get Teacher Profile page
+ Route::get('/userinfo', [UserDataController::class, 'show'] )   
+    ->name('userdata.show');
+
+
+// Revision List Routes
+
+
+    Route::get('/topics/{topic}/revisionlist', [RevisionListsController::class, 'show'])
+        ->name('revisionlists.show');
+
+  
+    Route::post('/topics/{topic}/revisionlist', [RevisionListsController::class, 'storeOrUpdate'])
+        ->name('revisionlists.save');
+
+
+    Route::delete('/topics/{topic}/revisionlist', [RevisionListsController::class, 'destroy'])
+        ->name('revisionlists.delete');
+
+
+        Route::get('/topic/{id}', [TopicsController::class, 'show']) ->name('topic.show');
+
+    //Route to generate PDF revision list
+Route::get('/pupils/{pupil}/subject/{subjectID}/revision-pack',[PupilScoresController::class, 'revisionPack']) 
+->name('pupil.revisionpack');
+
+
+    
 });
 
-//Edit and update user data- admin only
-Route::middleware(['auth'])->group(function () {
-Route::get('/EditUserData', [UserDataController::class, 'GetEditUserPage'])->name('EditUser');
+  
+// ******************{{ CONTROLS FOR ADMIN ONLY }}************************************
+Route::middleware(['auth', \App\Http\Middleware\AdminOnly::class])->group(function () {
+Route::get('/admin', [UserDataController::class, 'AdminControls'])
+    ->name('AdminControls');
 
-   Route::get('/admin/users/{user}/edit', [UserDataController::class, 'edit'])
-    ->name('userdata.edit');
-
-    Route::get('/admin/users/search', [UserDataController::class, 'liveSearch'])
-    ->name('userdata.liveSearch');
-
-    Route::put('/admin/users/{user}', [UserDataController::class, 'update'])
-        ->name('userdata.update');
-
-    Route::post('/admin/users/{user}', [UserDataController::class, 'store'])
-        ->name('userdata.store');        
-});
-
-
-
-Route::middleware(['auth', AdminOnly::class])->group(function () {
-Route::get('/ChangeUserPassword', [UserDataController::class, 'ChangeUserPasswordForm']) ->name('ChangeUserPassword'); 
-
-Route::post('/ChangeUserPassword', [UserDataController::class, 'ChangeUserPassword']) ->name('ChangeUserPassword.submit');
-
-Route::get('/createpupil', [PupilDataController::class, 'CreatePupilForm'])->name('CreatePupil');
-
-Route::post('/createpupil', [PupilDataController::class, 'store']) ->name('pupildata.store');
-
-Route::get('/createclass', [ClassListsController::class, 'CreateClassForm'])->name('CreateClass');
-
-Route::post('/createclass', [ClassListsController::class, 'store'])->name('classlists.store');
-
-
-Route::get('/user_manager', function () {
-    return view('admincontrols.UserManager');
+ Route::get('/user_manager', function () {return view('admincontrols.UserManager');
 })->name('user.manager');
 
-Route::get('/pupil_manager', function () {
-    return view('admincontrols.PupilManager');
-})->name('pupil.manager');
+Route::get('/pupil_manager', [PupilDataController::class, 'PupilManager'])
+    ->name('pupil.manager');   
+    // Create new user tools-  
+        Route::get('/createuser', [UserDataController::class, 'CreateUserForm'])
+            ->name('CreateUser');
 
-});   
+        Route::post('/createuser', [UserDataController::class, 'CreateUserForm'])
+            ->name('CreateUser');
+//Edit and update user data- admin only
+        Route::get('/EditUserData', [UserDataController::class, 'GetEditUserPage'])
+            ->name('EditUser');
 
-//CRUD controls for class lists
-    Route::middleware(['auth', \App\Http\Middleware\AdminOnly::class])->group(function () {
+        Route::get('/admin/users/{user}/edit', [UserDataController::class, 'edit'])
+             ->name('userdata.edit');
 
+        Route::get('/admin/users/search', [UserDataController::class, 'liveSearch'])
+            ->name('userdata.liveSearch');
+
+        Route::put('/admin/users/{user}', [UserDataController::class, 'update'])
+            ->name('userdata.update');
+
+        Route::post('/admin/users/{user}', [UserDataController::class, 'store'])
+            ->name('userdata.store');   
+
+            //Change any user password controls 
+        Route::post('/ChangeUserPassword', [UserDataController::class, 'ChangeUserPassword']) 
+            ->name('ChangeUserPassword.submit');
+
+        Route::get('/ChangeUserPassword', [UserDataController::class, 'ChangeUserPasswordForm']) 
+            ->name('ChangeUserPassword');  
+        
+        //CRUD controls for class lists
     Route::get('/class_manager', [ClassListsController::class, 'index'])
         ->name('class.manager');
 
@@ -118,18 +163,16 @@ Route::get('/pupil_manager', function () {
 
 // CRUD pupil info to classes
 
-
-
-Route::get('/subject_manager', [SubjectController::class, 'index'])
-    ->name('subject.manager');
+    Route::get('/subject_manager', [SubjectController::class, 'index'])
+        ->name('subject.manager');
 
 
 
     Route::get('/subjects/create', [SubjectController::class, 'create'])
-    ->name('subject.create');
+        ->name('subject.create');
    
     Route::post('/subjects', [SubjectController::class, 'store'])
-    ->name('subject.store');
+        ->name('subject.store');
 
 
     Route::get('/subject/{subject}/edit', [SubjectController::class, 'edit'])
@@ -142,22 +185,23 @@ Route::get('/subject_manager', [SubjectController::class, 'index'])
         ->name('subject.destroy');
 });
 
-Route::get('/class-pupil-list/{class}', [ClassListsController::class, 'pupils'])
-    ->name('class.pupils');
 
 
-Route::post('/class/{class}/pupil', [ClassListsController::class, 'addPupil'])
-    ->name('class.pupil.add');
+// ******************{{ CONTROLS FOR HOD USERS }}************************************
 
-Route::delete('/class/{class}/pupil/{pupil}', [ClassListsController::class, 'removePupil'])
-    ->name('class.pupil.remove');
-    
+Route::middleware(['auth', \App\Http\Middleware\HoDOnly::class])->group(function () {
+
+Route::get('/createpupil', [PupilDataController::class, 'CreatePupilForm'])->name('CreatePupil');
+
+Route::post('/createpupil', [PupilDataController::class, 'store']) ->name('pupildata.store');
+
+Route::get('/createclass', [ClassListsController::class, 'CreateClassForm'])->name('CreateClass');
+
+Route::post('/createclass', [ClassListsController::class, 'store'])->name('classlists.store');
 
 
 
-Route::get('/live-search', [SearchController::class, 'live'])
-    ->middleware('auth')
-    ->name('live.search');
+
 
 //HoD User routes
 Route::get('/SubjectOverview', [SubjectController::class, 'SubjectOverview']) 
@@ -168,14 +212,15 @@ Route::get('/SubjectOverview', [SubjectController::class, 'SubjectOverview'])
 Route::get('/HoDControls/CreateScheme', [SchemesController::class, 'create'])->name('schemes.create');
 Route::post('/schemes', [SchemesController::class, 'store']);
 Route::get('/schemes/{id}', [SchemesController::class, 'show']) ->name('schemes.show');
+Route::get('/scheme/{id}/edit', [SchemesController::class, 'edit']) ->name('scheme.edit');
+Route::put('/schemes/{id}', [SchemesController::class, 'update'])->name('schemes.update');
 
 //Topic lists
-Route::get('/topic/{id}', [TopicsController::class, 'show']) ->name('topic.show');
+
 
 Route::post('/topic/{id}/subtopic', [TopicsController::class, 'storeSubtopic']) ->name('subtopic.store');
+Route::delete('/scheme/topic/{id}', [SchemesController::class, 'deleteTopic'])
+    ->name('scheme.topic.delete');
 
-
-//Pupil Scores
-Route::post('/class/{id}/scores/save', [PupilScoresController::class, 'saveScores']) 
-->name('class.scores.save');
-
+});
+    

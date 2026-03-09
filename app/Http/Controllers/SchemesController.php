@@ -40,7 +40,8 @@ $request->validate([
     'topics' => 'required|array',
     'topics.*' => 'required|string',
     'max_scores' => 'array',
-    'max_scores.*' => 'integer|min:1'
+    'max_scores.*' => 'nullable|integer|min:1'
+
 ]);
 
 
@@ -84,24 +85,66 @@ public function show($id)
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Schemes $schemes)
-    {
-        //
-    }
+public function edit($id)
+{
+    $scheme = Schemes::with(['subject', 'topics' => function ($q) {
+        $q->orderBy('TeachingOrder');
+    }])->findOrFail($id);
+
+    return view('HoDControls.EditScheme', compact('scheme'));
+}
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Schemes $schemes)
-    {
-        //
+public function update(Request $request, $id)
+{
+    $scheme = Schemes::findOrFail($id);
+
+    $existingTopicIds = $scheme->topics->pluck('id')->toArray();
+    $submittedTopicIds = array_keys($request->topics ?? []);
+
+    // Delete topics that were removed in the UI
+    $idsToDelete = array_diff($existingTopicIds, $submittedTopicIds);
+    if (!empty($idsToDelete)) {
+        $scheme->topics()->whereIn('id', $idsToDelete)->delete();
     }
+
+    // Update existing topics
+    foreach ($request->topics as $topicId => $data) {
+        $scheme->topics()->where('id', $topicId)->update([
+            'Title'         => $data['Title'],
+            'MaxTestScore'  => $data['MaxTestScore'] ?? null,
+            'TeachingOrder' => $data['TeachingOrder'],
+        ]);
+    }
+
+    // Create new topics
+    if ($request->has('new_topics')) {
+        foreach ($request->new_topics as $data) {
+            $scheme->topics()->create([
+                'Title'         => $data['Title'],
+                'MaxTestScore'  => $data['MaxTestScore'] ?? null,
+                'TeachingOrder' => $data['TeachingOrder'],
+            ]);
+        }
+    }
+
+    return redirect()->route('schemes.show', $scheme->id)
+                     ->with('success', 'Scheme updated successfully.');
+}
+
+
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Schemes $schemes)
-    {
-        //
-    }
+  public function deleteTopic($id)
+{
+    Topics::findOrFail($id)->delete();
+
+    return back()->with('success', 'Topic deleted.');
+}
 }

@@ -11,28 +11,31 @@ class PupilTargetController extends Controller
     /**
      * Display a listing of the resource.
      */
-public function showPupilTargets($classId)
-{
-    $class = ClassLists::with(['pupils', 'scheme.topics'])->findOrFail($classId);
 
-    $yearGroup = $class->YearGroup;
-    $subjectId = $class->scheme->Subject_id;
+    // Take this to the ShowScores method to make it easier to render...
+// public function showPupilTargets($classId)
+// {
+//     $class = ClassLists::with(['pupils', 'scheme.topics'])->findOrFail($classId);
 
-    // Load targets for this class's pupils, subject, and year group
-    $targets = PupilTarget::whereIn('Pupil_id', $class->pupils->pluck('id'))
-        ->where('Subject_id', $subjectId)
-        ->where('YearGroup', $yearGroup)
-        ->get()
-        ->keyBy('Pupil_id');
+//     $yearGroup = $class->YearGroup;
+//     $subjectId = $class->subjectModel->id; 
+//     $yearGroup = $class->YearGroup;
 
-    return view('ClassPupilList', [
-        'class' => $class,
-        'topics' => $class->scheme->topics,
-        'Target' => $targets,
-        'subject_id' => $subjectId,   
-        'yearGroup' => $yearGroup,   
-    ]);
-}
+//     // Load targets for this class's pupils, subject, and year group
+//     $targets = PupilTarget::whereIn('Pupil_id', $class->pupils->pluck('id'))
+//         ->where('Subject_id', $subjectId)
+//         ->where('YearGroup', $yearGroup)
+//         ->get()
+//         ->keyBy('Pupil_id');
+
+//     return view('ClassPupilList', [
+//         'class' => $class,
+//         'topics' => $class->scheme->topics,
+//         'targets' => $targets,
+//         'subject_id' => $subjectId,   
+//         'yearGroup' => $yearGroup,   
+//     ]);
+// }
 
 
 

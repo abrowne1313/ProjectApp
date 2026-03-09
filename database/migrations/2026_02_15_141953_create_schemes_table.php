@@ -32,10 +32,3 @@ return new class extends Migration
         Schema::dropIfExists('schemes');
     }
 };
-            $table->id();
-            $table->string('ClassName');
-            $table->string('Subject');
-
-            $table->foreignId('teacher_id')
-                    ->constrained('user_data')
-                    ->cascadeOnDelete();

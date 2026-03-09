@@ -41,7 +41,11 @@ class ClassLists extends model
 
 public function scheme()
 {
-    return $this->belongsTo(Scheme::class, 'Subject', 'id');
+    return $this->hasOne(Schemes::class, 'Subject_id', 'subjectModel.id')
+                ->where('YearGroup', $this->YearGroup);
 }
 
+
+
 }
+

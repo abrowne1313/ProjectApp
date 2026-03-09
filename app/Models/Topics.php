@@ -23,9 +23,11 @@ class Topics extends Model
     return $this->belongsTo(Schemes::class, 'Scheme_id');
 }
 
-public function subtopics() {
-    return $this->hasMany(SubTopics::class, 'Topic_id');
+public function revisionlist()
+{
+    return $this->hasOne(revisionLists::class, 'topic_id', 'id');
 }
+
 
 }
 

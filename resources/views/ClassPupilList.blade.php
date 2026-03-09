@@ -38,66 +38,73 @@
 </thead>
 
             <tbody>
-                @foreach ($class->pupils as $rowIndex => $pupil)
-                    <tr>
-                        <td>{{ $pupil->FirstName }} {{ $pupil->Surname }}</td>
-                        <td>{{ $pupil->FormClass }}</td>
-                    
-                        <td>{{ $targets[$pupil->id]->Target ?? '' }}</td>
-                                <td >
-                                    <input
-                                        type="number"
-                                        name="targets[{{ $pupil->id }}]"
-                                        value="{{ $targets[$pupil->id]->Target ?? '' }}"
-                                        class="form-control score-input"
-                                        min="0"
-                                        max="100"
-                                        data-row="{{ $rowIndex }}"
-                                        data-col="2"
-                                    >
-                                </td>
 
-                        @foreach ($topics as $colIndex => $topic)
-                            @php
-                                $key = $pupil->id . '-' . $topic->id;
-                                $score = $scores[$key][0]->Score ?? null;
-                                $target = $targets[$pupil->id]->Target ?? null;
+@foreach ($class->pupils as $rowIndex => $pupil)
+    <tr>
+        <td>
+            <a href="{{ route('pupil.scores.overview', $pupil->id) }}">
+                {{ $pupil->FirstName }} {{ $pupil->Surname }}
+            </a>
+        </td>
 
-                                $colourClass = '';
+        <td>{{ $pupil->FormClass }}</td>
 
-                                if ($score !== null && $target !== null && $target > 0) {
-                                    $percent = ($score / $target) * 100;
+       
+        <td>
+            <input
+                type="number"
+                name="targets[{{ $pupil->id }}]"
+                value="{{ $targets[$pupil->id]->Target ?? '' }}"
+                class="form-control score-input"
+                min="0"
+                max="100"
+                data-row="{{ $rowIndex }}"
+                data-col="2"
+            >
+        </td>
 
-                                    if ($percent >= 105) {
-                                        $colourClass = 'score-green';
-                                    } elseif ($percent >= 96) {
-                                        $colourClass = 'score-amber';
-                                    } else {
-                                        $colourClass = 'score-red';
-                                    }
-                                }
-                            @endphp
+        
+        @foreach ($topics as $colIndex => $topic)
+            @php
+                $key = $pupil->id . '-' . $topic->id;
+                $existingScore = $scores[$key][0]->Score ?? null;
+                $target = $targets[$pupil->id]->Target ?? null;
 
-                            <td class="{{ $colourClass }}">
-                            @php
-                                $key = $pupil->id . '-' . $topic->id;
-                                $existingScore = $scores[$key][0]->Score ?? '';
-                            @endphp
-                            <td class="{{ $class }}">
-                                <input
-                                    type="number"
-                                    name="scores[{{ $pupil->id }}][{{ $topic->id }}]"
-                                    value="{{ $existingScore }}"
-                                    class="form-control score-input"
-                                    min="0"
-                                    max="100"
-                                    data-row="{{ $rowIndex }}"
-                                    data-col="{{ $colIndex }}"
-                                >
-                            </td>
-                        @endforeach
-                    </tr>
-                @endforeach
+                $existingScore = is_numeric($existingScore) ? (float) $existingScore : null;
+                $target = is_numeric($target) ? (float) $target : null;
+
+                $colourClass = '';
+
+                if ($existingScore !== null && $target !== null && $target > 0) {
+                    $percent = ($existingScore / $target) * 100;
+
+                    if ($percent >= 105) {
+                        $colourClass = 'score-green';
+                    } elseif ($percent >= 96) {
+                        $colourClass = 'score-amber';
+                    } else {
+                        $colourClass = 'score-red';
+                    }
+                }
+            @endphp 
+
+
+            <td class="{{ $colourClass }}">
+                <input
+                    type="number"
+                    name="scores[{{ $pupil->id }}][{{ $topic->id }}]"
+                    value="{{ $existingScore }}"
+                    class="form-control score-input"
+                    min="0"
+                    max="100"
+                    data-row="{{ $rowIndex }}"
+                    data-col="{{ $colIndex }}"
+                >
+            </td>
+        @endforeach
+    </tr>
+@endforeach
+
             </tbody>
         </table>
 
@@ -127,6 +134,7 @@
 
     <button type="submit">Add</button>
 </form>
+
 
 <!-- //To allow arrow keys to work to navigate on scores table -->
 <script>

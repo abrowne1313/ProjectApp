@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
 class PupilTarget extends Model
 {
                use Notifiable;
-    protected $table = 'pupil_target';   // From php MyAdmin
+    protected $table = 'pupil_targets';   // From php MyAdmin
     protected $primaryKey = 'id';     
     
     protected $fillable = [

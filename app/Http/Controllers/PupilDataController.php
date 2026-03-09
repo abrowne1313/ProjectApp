@@ -52,4 +52,13 @@ class PupilDataController extends Controller
         return redirect()->route('CreatePupil')->with('success', 'New Pupil created successfully.');
     }
 
+public function PupilManager()
+{
+    $pupils = PupilData::with(['classes.teacher'])->get();
+
+    return view('admincontrols/PupilManager', compact('pupils'));
+}
+
+
+
 }

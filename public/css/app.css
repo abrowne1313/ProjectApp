@@ -67,12 +67,11 @@ h1, h2, h3 {
 }
 
 /* =========================
-   FORMS
+   FORM LAYOUT
 ========================= */
 
 form {
-    background: #ffffff;
-    padding: 50px;
+
     border-radius: 6px;
     max-width: 1400px;
     margin: 0 auto;
@@ -85,24 +84,23 @@ label {
     margin-bottom: 6px;
 }
 
-input,
-select,
-button
- {
-    width: 100%;
+
+form input,
+form select,
+form button {
     padding: 10px;
     margin-bottom: 15px;
     font-size: 14px;
     border-radius: 4px;
 }
 
-input,
-select {
+form input,
+form select {
     border: 1px solid #ccc;
 }
 
-input:focus,
-select:focus {
+form input:focus,
+form select:focus {
     outline: none;
     border-color: #2c3e50;
 }
@@ -120,21 +118,19 @@ button {
     transition: background-color 0.2s ease;
 }
 
-
 button:hover {
     background-color: #1f2f3a;
 }
 
-/* =========================
-   DELETE/CANCEL BUTTONS
-========================= */
-.btn-delete {
-    width: 34px;
-    height: 34px;
+/* Small delete buttons */
+.btn-delete,
+.btn-outline-danger.btn-sm {
+    width: auto;
+    height: auto;
+    padding: 6px 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
 }
 
 /* =========================
@@ -162,26 +158,9 @@ a:hover {
     text-decoration: underline;
 }
 
-.logout-form {
-    margin: 0;
-    border-radius: 0px;
-}
-
-.nav-button {
-    background: none;
-    border: none;
-    /* padding: 6px 10px; */
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-
-.nav-button:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-}
-
+/* =========================
+   ADMIN TILES
+========================= */
 
 .admin-tile {
     display: inline-flex;
@@ -218,6 +197,10 @@ a:hover {
     margin-top: 30px;
 }
 
+/* =========================
+   SEARCH BAR
+========================= */
+
 .nav-search {
     display: flex;
     gap: 10px;
@@ -251,20 +234,6 @@ a:hover {
     width: 220px;
 }
 
-.search-results {
-    position: absolute;
-    top: 38px;
-    left: 0;
-    right: 0;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    max-height: 250px;
-    overflow-y: auto;
-    display: none;
-    z-index: 1000;
-}
-
 .search-results div {
     padding: 8px 10px;
     cursor: pointer;
@@ -274,64 +243,57 @@ a:hover {
     background: #f1f1f1;
 }
 
-.btn-edit {
-    background: #2980b9;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 6px;
+.search-results {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    width: 250px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    z-index: 9999;
+}
+
+.search-item {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.search-item a {
     text-decoration: none;
+    color: #333;
+    display: block;
 }
 
-.btn-delete {
-    background: #c0392b;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
+.search-item:hover {
+    background: #f5f5f5;
 }
 
-.btn-edit:hover,
-.btn-delete:hover {
-    opacity: 0.85;
+.search-item .type {
+    float: right;
+    font-size: 0.8em;
+    color: #888;
 }
 
-/* Puts space between edit and delete class buttons */
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
 .action-buttons {
     display: flex;
-    gap: 10px;             
+    gap: 10px;
     align-items: center;
 }
 
 .action-buttons form {
-    margin: 0;              
+    margin: 0;
 }
 
+/* =========================
+   SUBJECT TABS
+========================= */
 
-/* Live search formatting*/
-#search-results {
-    list-style: none;
-    padding: 0;
-    margin-top: 5px;
-}
-
-#search-results li {
-    padding: 6px;
-    border-bottom: 1px solid #ddd;
-}
-
-#search-results li a {
-    text-decoration: none;
-    color: #2c3e50;
-    display: block;
-}
-
-#search-results li a:hover {
-    background: #ecf0f1;
-}
-
-
-/* Subejct tabs for HoD formatting */
 .nav-tabs.subject-tabs .nav-link.subject-tab {
     background-color: #e3f2fd;
     color: #0d47a1;
@@ -345,7 +307,6 @@ a:hover {
     color: #0d47a1;
 }
 
-/* Active tab */
 .nav-tabs.subject-tabs .nav-link.subject-tab.active {
     background-color: #0d47a1;
     color: #ffffff !important;
@@ -353,39 +314,75 @@ a:hover {
     border-color: #0d47a1;
 }
 
+/* =========================
+   TOPIC ROWS (Create Scheme)
+========================= */
+
 .topic-row {
     display: flex;
-    gap: 10px; /* space between inputs */
+    gap: 10px;
     margin-bottom: 8px;
 }
 
 .topic-row input {
-    flex: 1; /* makes both inputs equal width */
+    flex: 1;
 }
 
-
-.score-input {
-    width: 70px;
-    text-align: center;
-    padding: 4px 6px;
+/* Prevent global form styles from breaking flex layout */
+#topics input,
+#topics button {
+    width: auto !important;
+    margin-bottom: 0 !important;
 }
 
-th.rotate {
-    height: 140px;
-    width: 40px;
-    padding: 0;
-    vertical-align: bottom; 
-    position: relative;
+/* =========================
+   TOPIC LIST (Edit Scheme)
+========================= */
+
+#topic-list li.list-group-item {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    gap: 0.75rem;
 }
 
-th.rotate > div {
-    position: absolute;
-    top: 100%; /* anchor to the top of the score row */
-    left: 50%;
-    transform-origin: top left;
-    transform: rotate(-90deg) translate(0, -50%);
-    white-space: nowrap;
+#topic-list li > div {
+    display: flex !important;
+    align-items: center !important;
+    flex-grow: 1 !important;
+    min-width: 0 !important;
+    gap: 0.75rem;
 }
 
+#topic-list input.form-control {
+    min-width: 0 !important;
+    flex-shrink: 1 !important;
+}
+
+/* =========================
+   SCORE COLOURS
+========================= */
+
+.score-green { background-color: #c8e6c9 !important; }
+.score-amber { background-color: #fff8e1 !important; }
+.score-red   { background-color: #ffcdd2 !important; }
 
 
+.nav-pills .nav-link {
+    border-radius: 50px;
+    padding: 0.6rem 1.2rem;
+    font-weight: 500;
+    color: #0d6efd;
+    border: 1px solid #0d6efd;
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-pills .nav-link:hover {
+    background-color: #e7f1ff;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+}

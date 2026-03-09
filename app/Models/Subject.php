@@ -23,7 +23,7 @@ class Subject extends Model
 }
 
 public function schemes() {
-    return $this->hasMany(Scheme::class);
+    return $this->hasMany(Schemes::class);
 }
 
 }

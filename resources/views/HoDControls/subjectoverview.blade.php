@@ -57,6 +57,7 @@
     <div class="list-group">
 
         @foreach ($schemes as $scheme)
+        <li>
             <a
                 href="{{ route('schemes.show', $scheme->id) }}"
                 class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
@@ -69,6 +70,7 @@
                     
                 </span>
             </a>
+</li>
         @endforeach
 
     </div>

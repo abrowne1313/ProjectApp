@@ -17,4 +17,18 @@ class PupilScores extends Model
         'Score' 
     
     ];
+
+    
+
+    public function pupil()
+    {
+        return $this->belongsTo(pupildata::class, 'Pupil_id');
+    }
+
+    public function topic()
+    {
+        return $this->belongsTo(Topics::class, 'Topic_id');
+    }
+
+
 }

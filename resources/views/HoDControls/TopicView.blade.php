@@ -14,32 +14,29 @@
 
     <hr>
 
-    <h3>Subtopics</h3>
+    <h3>Revision List</h3>
 
-    @if($topic->subtopics->count() === 0)
-        <p>No subtopics added yet.</p>
+    @if(!$topic->revisionlist)
+        <p>No revision list added yet.</p>
     @else
-        <ul>
-            @foreach ($topic->subtopics as $sub)
-                <li>{{ $sub->Title }}</li>
-            @endforeach
-        </ul>
+        <div class="border p-3">
+            {!! nl2br(e($topic->revisionlist->content)) !!}
+        </div>
     @endif
 
     <hr>
 
-    <h3>Add a New Subtopic</h3>
+    <h3>Edit Revision List</h3>
 
-    <form method="POST" action="{{ route('subtopic.store', $topic->id) }}">
+    <form method="POST" action="{{ route('revisionlists.save', $topic->id) }}">
         @csrf
 
-        <div class="mb-3">
-            <label class="form-label">Subtopic Title</label>
-            <input type="text" name="Title" class="form-control" required>
-        </div>
+        <textarea name="content" class="form-control" rows="10" required>
+            {{ $topic->revisionlist->content ?? '' }}
+        </textarea>
 
-        <button type="submit" class="btn btn-primary">
-            Add Subtopic
+        <button type="submit" class="btn btn-primary mt-3">
+            Save Revision List
         </button>
     </form>
 

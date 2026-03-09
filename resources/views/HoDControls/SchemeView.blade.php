@@ -10,7 +10,12 @@
     <strong>Created by:</strong>
     {{ $scheme->creator->FirstName }} {{ $scheme->creator->Surname }}
 </p>
-    <hr>
+            @if(in_array(auth()->user()->user_type, [1, 2]))
+                 <a href="{{ route('scheme.edit', $scheme->id) }}"
+                    class="btn-edit">
+                    Edit
+                    </a>
+        @endif
 
     <h2>Topics</h2>
 
@@ -20,10 +25,7 @@
         <ol>
             @foreach ($scheme->topics as $topic)
                 <li>
-                    
-
-
-                                <a
+                    <a
                 href="{{ route('topic.show', $topic->id) }}"
                 class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
             >
