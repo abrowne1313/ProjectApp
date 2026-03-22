@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('class_lists', function (Blueprint $table) {
             $table->id();
             $table->string('ClassName');
+            $table->string('YearGroup');
             $table->string('Subject');
 
             $table->foreignId('teacher_id')

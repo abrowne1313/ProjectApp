@@ -17,40 +17,6 @@ use PDF;
 
 class PupilScoresController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-// public function showClassScores($classId)
-// { 
-//     dd('SHOW CLASS SCORES IS RUNNING', $classId);
-//     $class = ClassLists::with(['pupils', 'scheme.topics'])->findOrFail($classId);
-
-//     // Load scores
-//     $scores = PupilScores::whereIn('Pupil_id', $class->pupils->pluck('id'))
-//         ->get()
-//         ->groupBy( fn($score) => $score->Pupil_id . '-' . $score->Topic_id);
-
-//     // Load targets
-//     $subjectId = Subject::where('Subject', $class->Subject)->value('id');
-//     $yearGroup = $class->YearGroup;
-
-//     $targets = PupilTarget::whereIn('Pupil_id', $class->pupils->pluck('id'))
-//         ->where('Subject_id', $subjectId)
-//         ->where('YearGroup', $yearGroup)
-//         ->get()
-//         ->keyBy('Pupil_id');
- 
-//     return view('ClassPupilList', [
-//         'class' => $class,
-//         'topics' => $class->scheme->topics ?? collect(),
-//         'scores' => $scores,
-//         'targets' => $targets, 
-          
-//     ]);
-   
-
-// }
-
 
 public function overview(pupildata $pupil)
 {
@@ -97,29 +63,16 @@ public function showYearSubject(pupildata $pupil, $year, $subjectID)
         'scores' => $scores->keyBy('Topic_id'),
         'target' => $target,
     ]);
-
-
-
 }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
- 
-    /**
-     * Store a newly created resource in storage.
-     */
 
 
 public function saveScores(Request $request, $classId)
 {
     $class = ClassLists::findOrFail($classId);
 
-    $subjectId = $class->subjectModel->id;
+    $subject = Subject::where('Subject', $class->Subject)->first();
+    $subjectId = $subject->id;
+
     $yearGroup = $class->YearGroup;
 
     /* 
@@ -174,57 +127,47 @@ public function saveScores(Request $request, $classId)
         ->with('status', 'Scores and targets saved successfully.');
 }
 
-
-
-
-
-
-    /**
-     * Display the revision pack for underachieving topics
-     */
    /**
      * Display the revision pack for underachieving topics
      */
 public function revisionPack(PupilData $pupil, $subjectID)
 {
     $year = $pupil->YearGroup;
+    $target = \DB::table('pupil_targets')
+        ->where('Pupil_id', $pupil->id)
+        ->where('Subject_id', $subjectID)
+        ->first();
 
-    // 1. Get all scores for this pupil for this subject + year
     $scores = PupilScores::where('Pupil_id', $pupil->id)
         ->whereHas('topic.scheme', function ($q) use ($year, $subjectID) {
-            $q->where('YearGroup', $year)
-              ->where('Subject_id', $subjectID);
+            $q->where('YearGroup', $year)->where('Subject_id', $subjectID);
         })
         ->with(['topic.scheme.subject', 'topic.revisionlist'])
-        ->get()
-        ->keyBy('Topic_id');
+        ->get();
 
-    $target = \DB::table('pupil_targets')
-    ->where('Pupil_id', $pupil->id)
-    ->where('Subject_id', $subjectID)
-    ->first();
- 
-    // 2. Extract topics in teaching order
-    $topics = $scores->pluck('topic')
-        ->filter() // remove nulls
-        ->unique('id')
-        ->sortBy('TeachingOrder');
-
-    // 3. Get the subject model
     $subject = $scores->first()->topic->scheme->subject ?? null;
-
-    // 4. Build a simple list of topics with scores + revision lists
     $topicData = [];
 
-    foreach ($topics as $topic) {
-        $topicData[] = [
-            'topic' => $topic,
-            'score' => $scores[$topic->id]->Score ?? null,
-            'revisionlist' => $topic->revisionlist->content ?? 'No revision list available.'
-        ];
+    foreach ($scores as $score) {
+        $topic = $score->topic;
+        $actualScore = $score->Score;
+
+        // Only include topics where they scored LESS than or EQUAL to their target
+            if ($actualScore !== null && $actualScore <= ($target->Target ?? 0)) {
+                $topicData[] = [
+                    'topic' => $topic,
+                    'score' => $actualScore,
+                    'revisionlist' => $topic->revisionlist->content ?? 'No revision list available.',
+                    'url' => $topic->revisionlist->url ?? null
+                ];
+            }
     }
 
-    // 5. Generate PDF
+    // Sort the final list by teaching order for the student's benefit
+    $topicData = collect($topicData)->sortBy(function($item) {
+        return $item['topic']->TeachingOrder;
+    });
+
     $pdf = \PDF::loadView('PDF.RevisionPack', [
         'pupil' => $pupil,
         'subject' => $subject,
@@ -240,27 +183,5 @@ public function revisionPack(PupilData $pupil, $subjectID)
 
 
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PupilScores $pupilScores)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PupilScores $pupilScores)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(PupilScores $pupilScores)
-    {
-        //
-    }
+   
 }

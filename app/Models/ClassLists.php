@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class ClassLists extends model
 {
-            use Notifiable;
+    use HasFactory, Notifiable;
     protected $table = 'class_lists';   // From php MyAdmin
     protected $primaryKey = 'id';     
 
@@ -33,6 +35,7 @@ class ClassLists extends model
     {
         return $this->belongsTo(UserData::class, 'teacher_id');
     }
+
 
     public function subject()
 {

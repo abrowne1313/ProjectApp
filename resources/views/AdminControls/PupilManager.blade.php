@@ -15,13 +15,16 @@
             <th>Name</th>
             <th>Form class</th>
             <th>Classes</th>
+            <th>Action</th>
         </tr>
     </thead>
 
     <tbody>
         @foreach ($pupils as $pupil)
             <tr>
-                <td>{{ $pupil->FirstName }} {{ $pupil->Surname }}</td>
+                <td><a href="{{ route('pupil.scores.overview', $pupil->id) }}">
+                {{ $pupil->FirstName }} {{ $pupil->Surname }}
+            </a></td>
                 <td>{{ $pupil->FormClass }}</td>
 
                 <td>
@@ -38,7 +41,19 @@
                         <em>No classes assigned</em>
                     @endif
                 </td>
+                <td>
+                    <form action="{{ route('pupils.destroy', $pupil->id) }}" method="POST" 
+      onsubmit="return confirm('Are you sure you want to delete this pupil? This action cannot be undone.');" 
+      style="display:inline;">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-sm btn-danger">
+        <i class="bi bi-trash"></i> Delete
+    </button>
+</form>
+</td>
             </tr>
+            
         @endforeach
     </tbody>
 </table>

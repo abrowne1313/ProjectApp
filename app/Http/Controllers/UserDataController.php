@@ -10,8 +10,11 @@ use App\Models\ClassLists;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+
+
 class UserDataController extends Controller
 {
+
     /**
      * Show login form.
      */
@@ -66,9 +69,13 @@ $hodSubject = Subject::where('HoD_Teacher_id', $user->id)->first();
 
 $departmentalClasses = collect();
 
+$departmentTeachers = UserData::whereIn('id', $departmentalClasses->pluck('Teacher_id'))
+    ->orderBy('Surname')
+    ->get();
+
 if ($user->user_type == 3 && $hodSubject) {
     $departmentalClasses = ClassLists::where('Subject', $hodSubject->Subject)
-        ->orderBy('YearGroup')
+        ->orderBy('YearGroup','asc')
         ->get();
 }
 
@@ -87,7 +94,8 @@ if ($user->user_type == 3 && $hodSubject) {
         'subjects',
         'schemes',
         'selectedSubject',
-        'departmentalClasses'
+        'departmentalClasses',
+        'departmentTeachers'
     ));
 }
 
@@ -208,7 +216,7 @@ public function edit(UserData $user)
     {
         UserData::findOrFail($id)->delete();
 
-        return redirect()->route('userdata.index')->with('success', 'UserData deleted successfully.');
+        return redirect()->route('admincontrols/admin')->with('success', 'UserData deleted successfully.');
     }
 
     // Controllers for user to change their own password
@@ -249,30 +257,40 @@ public function ChangeOwnPasswordPost(Request $request)
 
 
 //Controllers for Admin to change any user password
-    public function ChangeUserPasswordForm()
-    {
-        return view('admincontrols/ChangeUserPassword');
+public function showChangePasswordForm($id=null) 
+{
+    $user =$id ? UserData::findOrFail($id) : new UserData();
+    return view('AdminControls/changeUserPassword', compact('user'));
+}
+
+public function ChangeUserPassword(Request $request)
+{ 
+    if (!$request->user_id && $request->UserEmail) {
+        $user = UserData::where('UserEmail', $request->UserEmail)->first();
+        if (!$user) {
+            return back()->withErrors(['UserEmail' => 'No user found with that email address.']);
+        }
+        $userId = $user->id;
+    } else {
+        $userId = $request->user_id;
     }
 
- public function ChangeUserPassword(Request $request)
-  { 
-    // Validate input
-     $request->validate([ 
-        'UserEmail' => 'required|email', 
+   
+    $request->merge(['user_id' => $userId]); 
+    
+    $request->validate([ 
+        'user_id'      => 'required|exists:user_data,id', 
         'newpassword1' => 'required|min:6', 
         'newpassword2' => 'required|same:newpassword1' 
     ]); 
-    // Find the user 
-    $user = UserData::where('UserEmail', $request->UserEmail)->first(); 
-    if (!$user) {
-         return back()->withErrors(['UserEmail' => 'User not found.']); 
-        } 
-        // Update password 
-        $user->password = Hash::make($request->newpassword1); 
-        $user->save(); 
-        
-        return redirect()->back()->with('success', 'Password updated successfully!'); 
-    }
+
+    $user = UserData::findOrFail($request->user_id); 
+    $user->password = \Hash::make($request->newpassword1); 
+    $user->save(); 
+    
+    return redirect()->route('userdata.showAdminView', $user->id)
+                     ->with('success', 'Password updated successfully!'); 
+}
 
 public function show()
 {
@@ -280,4 +298,13 @@ public function show()
     return view('UserProfile', compact('user'));
 }
 
+
+public function showAdminView($id) 
+{
+    $user = UserData::findOrFail($id); 
+
+    $classes = $user->classes; 
+
+    return view('admincontrols/UserDetails', compact('user', 'classes'));
+}
 } 

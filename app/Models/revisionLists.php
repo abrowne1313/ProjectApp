@@ -3,10 +3,11 @@
 namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class revisionlists extends Model
 {
-           use Notifiable;
+           use HasFactory, Notifiable;
     protected $table = 'revisionlists';   // From php MyAdmin
     protected $primaryKey = 'id';     
     

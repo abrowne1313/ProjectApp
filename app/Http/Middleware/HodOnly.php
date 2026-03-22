@@ -16,11 +16,13 @@ class HodOnly
 // app/Http/Middleware/HodOnly.php
 public function handle($request, Closure $next)
 {
+    //Check if logged in
+    if (!auth()->check()) {
+        return redirect()->route('login');
+    }
     if (!auth()->check() || !in_array(auth()->user()->user_type, [1, 2, 3])) {
-            return redirect()
-                ->route('dashboard')
-                ->with('error', 'You are not authorised to access that page.');
-        }
+abort(403, 'You are not authorised to access that page.');
+    }
     return $next($request);
 }
 

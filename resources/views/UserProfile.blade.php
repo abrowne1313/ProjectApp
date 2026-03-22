@@ -13,7 +13,12 @@
 
         <p><strong>Password:</strong> ********</p>
 
-        <p><strong>User Type:</strong> {{ $user->user_type }}</p>
+         <p>
+            <strong>User Type:</strong> 
+            <span class="badge bg-secondary">
+                {{ $user->type->usertype ?? 'Unassigned' }}
+            </span>
+        </p>
 
         <a href="{{ route('ChangePassword') }}" class="btn btn-primary mt-3">
             Change Password

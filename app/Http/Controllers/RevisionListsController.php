@@ -13,18 +13,10 @@ class RevisionListsController extends Controller
      */
     public function show(Topics $topic)
     {
-        return view('revisionlists.show', [
+        return view('revisionListView', [
             'topic' => $topic,
             'revisionlist' => $topic->revisionlist
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -39,7 +31,8 @@ class RevisionListsController extends Controller
         // Create or update the revision list
         $topic->revisionlist()->updateOrCreate(
             ['topic_id' => $topic->id],
-            ['content' => $request->content]
+            ['content' => $request->content],
+            ['url' => $request->url]
         );
 
         return redirect()
@@ -47,27 +40,7 @@ class RevisionListsController extends Controller
             ->with('success', 'Revision list saved successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(revisionLists $revisionLists)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, revisionLists $revisionLists)
-    {
-        //
-    }
-
+ 
     /**
      * Remove the specified resource from storage.
      */
@@ -78,7 +51,7 @@ class RevisionListsController extends Controller
         }
 
         return redirect()
-            ->route('revisionlist.show', $topic->id)
+            ->route('revisionlists.show', $topic->id)
             ->with('success', 'Revision list deleted.');
     }
 }

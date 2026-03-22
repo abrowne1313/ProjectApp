@@ -17,6 +17,7 @@ return new class extends Migration
            ->constrained('schemes')
             ->cascadeOnDelete();
             $table->string('Title');
+            $table->integer('MaxTestScore')->nullable();
             $table->integer('TeachingOrder');
             $table->timestamps();
         });

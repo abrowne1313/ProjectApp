@@ -34,7 +34,9 @@
                 <div><span>{{ $topic->Title }}</span></div>
             </th>
         @endforeach
+            <th class ="rotate"><div>Remove Pupil</div></th>
     </tr>
+
 </thead>
 
             <tbody>
@@ -102,8 +104,21 @@
                 >
             </td>
         @endforeach
+            <td class="text-center">
+<form action="{{ route('class.pupil.remove', [$class->id, $pupil->id]) }}" method="POST" 
+                  onsubmit="return confirm('Remove this pupil from this class?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-x-circle"></i> Remove
+                </button>
+            </form>
+
+</td>
     </tr>
+
 @endforeach
+            
 
             </tbody>
         </table>
@@ -176,6 +191,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 @endsection
+
+
 
 
 

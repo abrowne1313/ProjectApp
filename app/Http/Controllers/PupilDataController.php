@@ -59,6 +59,25 @@ public function PupilManager()
     return view('admincontrols/PupilManager', compact('pupils'));
 }
 
+/**
+ * Remove the specified pupil from storage.
+ */
+public function destroy($id)
+{
+     if (auth()->user()->user_type >= 3) {
+        abort(403, 'Unauthorized action.');
+    }
 
+
+    $pupil = PupilData::findOrFail($id);
+
+    $pupil->delete();
+    
+    return redirect()
+    ->route('pupil.manager')
+    ->with('success', 'Pupil deleted successfully.');
+
+
+}
 
 }

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PupilScores extends Model
 {
-           use Notifiable;
+           use HasFactory, Notifiable;
     protected $table = 'pupil_scores';   // From php MyAdmin
     protected $primaryKey = 'id';     
     

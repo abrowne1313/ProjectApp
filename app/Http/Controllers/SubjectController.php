@@ -98,40 +98,46 @@ public function create()
     }
 
 public function SubjectOverview(Request $request) 
+{ 
+    $user = auth()->user(); 
+    // Matching your user_type logic from the blade (1 or 2 often denotes Admin/HoD)
+    $isAdmin = in_array($user->user_type, [1, 2]); 
 
-{ $user = auth()->user(); 
-$isAdmin = $user->role === 'admin'; 
-
-if ($isAdmin) { 
-    $subjects = Subject::all();
- } else { 
-    $subjects = Subject::where('HoD_Teacher_id', $user->id)->get(); 
+    if ($isAdmin) { 
+        $subjects = Subject::all();
+    } else { 
+        // Assuming your HoD relationship is set up
+        $subjects = Subject::where('HoD_Teacher_id', $user->id)->get(); 
     } 
+
     if ($subjects->isEmpty()) { 
-        abort(403, 'No subjects available.'); }
-       
-    
-    // Get active subject 
-    $activeSubjectId = $request->get( 
-        'subject_id',
-         session('active_subject_id', $subjects->first()->id) 
-         ); 
-         
-// Prevent HoD from accessing subjects they arent head of 
-if (!$isAdmin && !$subjects->contains('id', $activeSubjectId)) { abort(403); }
+        abort(403, 'No subjects available.'); 
+    }
+
+    // Determine the ID: Input first, then Session, then first available subject
+    $activeSubjectId = $request->get('subject_id', session('active_subject_id', $subjects->first()->id)); 
+
+    // Safety check: Ensure the user has permission for this specific subject
+    if (!$isAdmin && !$subjects->contains('id', $activeSubjectId)) { 
+        $activeSubjectId = $subjects->first()->id; 
+    }
+
     session(['active_subject_id' => $activeSubjectId]); 
-    
+
     $activeSubject = $subjects->where('id', $activeSubjectId)->first(); 
     
-    // Load all existing schemes for this subject 
-    $schemes = Schemes::where('subject_id', $activeSubject->id) 
-    ->orderBy('YearGroup') 
-    ->get(); 
+    // Efficiently get schemes and count their related topics
+    $schemes = Schemes::where('Subject_id', $activeSubject->id) 
+        ->withCount('topics') // This creates a 'topics_count' attribute
+        ->orderBy('YearGroup','asc') 
+        ->get(); 
     
     return view('HoDControls.subjectoverview', compact( 
         'subjects', 
         'activeSubject', 
         'isAdmin', 
-        'schemes' )); }
+        'schemes' 
+    )); 
+}
 
 }

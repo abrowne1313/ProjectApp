@@ -14,10 +14,14 @@ class ClassListsFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-    {
-        return [
-            //
-        ];
-    }
+// database/factories/ClassListsFactory.php
+public function definition(): array
+{
+    return [
+        'ClassName'  => fake()->bothify('??-##'), // Generates random class name
+        'YearGroup'  => fake()->numberBetween(8, 14),
+        'Subject'    => fake()->randomElement(['Maths', 'Science', 'English', 'History']),
+        'teacher_id' => \App\Models\UserData::factory(), // Automatically creates a teacher 
+    ];
+}
 }

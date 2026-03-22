@@ -48,7 +48,7 @@ Route::get('/classes/{class}', [ClassListsController::class, 'show'])
  Route::get('/changePassword', [UserDataController::class, 'ChangeOwnPassword']) 
     ->name('ChangePassword' );
 
-Route::post('/ChangePassword', [UserDataController::class, 'ChangeOwnPasswordPost']) 
+Route::post('/changePassword', [UserDataController::class, 'ChangeOwnPasswordPost']) 
     ->name('ChangePassword.submit');   
 
 Route::get('/class-pupil-list/{class}', [ClassListsController::class, 'pupils'])
@@ -116,13 +116,21 @@ Route::get('/admin', [UserDataController::class, 'AdminControls'])
  Route::get('/user_manager', function () {return view('admincontrols.UserManager');
 })->name('user.manager');
 
+    //Show all info for single user
+Route::get('/userinfofull/{id}', [UserDataController::class, 'showAdminView'])   
+    ->name('userdata.showAdminView');
+
 Route::get('/pupil_manager', [PupilDataController::class, 'PupilManager'])
-    ->name('pupil.manager');   
+    ->name('pupil.manager');  
+    
+    
+Route::delete('/pupils/{id}', [PupilDataController::class, 'destroy'])
+    ->name('pupils.destroy');
     // Create new user tools-  
         Route::get('/createuser', [UserDataController::class, 'CreateUserForm'])
             ->name('CreateUser');
 
-        Route::post('/createuser', [UserDataController::class, 'CreateUserForm'])
+        Route::post('/createuser', [UserDataController::class, 'store'])
             ->name('CreateUser');
 //Edit and update user data- admin only
         Route::get('/EditUserData', [UserDataController::class, 'GetEditUserPage'])
@@ -138,14 +146,20 @@ Route::get('/pupil_manager', [PupilDataController::class, 'PupilManager'])
             ->name('userdata.update');
 
         Route::post('/admin/users/{user}', [UserDataController::class, 'store'])
-            ->name('userdata.store');   
+            ->name('userdata.store');  
+            
+        Route::delete('/admin/users/{user}', [UserDataController::class, 'destroy'])
+            ->name('userdata.delete');      
 
             //Change any user password controls 
         Route::post('/ChangeUserPassword', [UserDataController::class, 'ChangeUserPassword']) 
             ->name('ChangeUserPassword.submit');
 
-        Route::get('/ChangeUserPassword', [UserDataController::class, 'ChangeUserPasswordForm']) 
-            ->name('ChangeUserPassword');  
+        Route::get('/change-password/{id}', [UserDataController::class, 'showChangePasswordForm'])
+            ->name('ChangeUserPassword');
+
+        Route::get('/change-password', [UserDataController::class, 'showChangePasswordForm'])
+    ->name('ChangeAnyUserPassword');
         
         //CRUD controls for class lists
     Route::get('/class_manager', [ClassListsController::class, 'index'])
@@ -195,6 +209,7 @@ Route::get('/createpupil', [PupilDataController::class, 'CreatePupilForm'])->nam
 
 Route::post('/createpupil', [PupilDataController::class, 'store']) ->name('pupildata.store');
 
+
 Route::get('/createclass', [ClassListsController::class, 'CreateClassForm'])->name('CreateClass');
 
 Route::post('/createclass', [ClassListsController::class, 'store'])->name('classlists.store');
@@ -204,9 +219,7 @@ Route::post('/createclass', [ClassListsController::class, 'store'])->name('class
 
 
 //HoD User routes
-Route::get('/SubjectOverview', [SubjectController::class, 'SubjectOverview']) 
-->middleware('auth') 
-->name('subject.overview');
+Route::get('/SubjectOverview', [SubjectController::class, 'SubjectOverview']) ->name('subject.overview');
 
 //HoD Scheme creation routes
 Route::get('/HoDControls/CreateScheme', [SchemesController::class, 'create'])->name('schemes.create');
@@ -223,4 +236,3 @@ Route::delete('/scheme/topic/{id}', [SchemesController::class, 'deleteTopic'])
     ->name('scheme.topic.delete');
 
 });
-    
