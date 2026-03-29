@@ -29,15 +29,21 @@ class UserData extends Authenticatable
 
     public function type()
 {
-    // links user_type to id on the user_types table
+   
     return $this->belongsTo(user_type::class, 'user_type', 'id');
 }
 
-    // Tell Laravel which column is the password
+
     public function getAuthPassword()
     {
         return $this->password;
     }
+
+// Tell larael to use UserEmail and not email when logging in
+public function getAuthIdentifierName()
+{
+    return 'UserEmail';
+}
 
         public function getEmailForPasswordReset()
     {
