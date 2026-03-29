@@ -48,6 +48,9 @@ jobs:
           name: php-app
           path: .
 
+      -name: Clear Views
+  run: php artisan view:clear || true
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
