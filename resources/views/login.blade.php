@@ -7,7 +7,8 @@
  
     <h1>Login</h1>
 
-    <form action="{{ route('login.submit') }}" method="post">
+    <!-- <form action="{{ route('login.submit') }}" method="post"> -->
+        <form action="https://mymarkbook-gudqhva3bre8f0fh.ukwest-01.azurewebsites.net/login" method="POST">
         @csrf
  
 
