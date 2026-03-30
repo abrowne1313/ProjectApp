@@ -146,9 +146,6 @@ Route::delete('/pupils/{id}', [PupilDataController::class, 'destroy'])
         Route::get('/admin/users/search', [UserDataController::class, 'liveSearch'])
             ->name('userdata.liveSearch');
 
-        Route::put('/admin/users/{user}', [UserDataController::class, 'update'])
-            ->name('userdata.update');
-
                     
         Route::delete('/admin/users/{user}', [UserDataController::class, 'destroy'])
             ->name('userdata.delete');      
