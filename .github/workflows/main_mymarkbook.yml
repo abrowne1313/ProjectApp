@@ -13,9 +13,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
- 
-steps:
+      contents: read
+
+    steps:
       - uses: actions/checkout@v4
 
       - name: Setup PHP
@@ -42,14 +42,14 @@ steps:
           npm install
           npm run build
 
+      - name: Clear Views
+        run: php artisan view:clear || true
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: php-app
           path: .
-
-      -name: Clear Views
-  run: php artisan view:clear || true
 
   deploy:
     runs-on: ubuntu-latest
