@@ -22,7 +22,7 @@
     @endif
 
     <!-- User creation form -->
-    <form action="{{ route('CreateUser') }}" method="POST">
+    <form action="{{ route('CreateUser.store') }}" method="POST">
         @csrf
 
 

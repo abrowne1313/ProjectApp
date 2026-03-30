@@ -127,17 +127,21 @@ Route::get('/pupil_manager', [PupilDataController::class, 'PupilManager'])
 Route::delete('/pupils/{id}', [PupilDataController::class, 'destroy'])
     ->name('pupils.destroy');
     // Create new user tools-  
-        Route::get('/createuser', [UserDataController::class, 'CreateUserForm'])
-            ->name('CreateUser');
+        Route::get('/create-user', [UserDataController::class, 'CreateUserForm'])
+            ->name('CreateUser.show');
+        
+        Route::post('/create-user', [UserDataController::class, 'store'])
+            ->name('CreateUser.store');
 
-        Route::post('/createuser', [UserDataController::class, 'store'])
-            ->name('CreateUser');
 //Edit and update user data- admin only
         Route::get('/EditUserData', [UserDataController::class, 'GetEditUserPage'])
             ->name('EditUser');
 
         Route::get('/admin/users/{user}/edit', [UserDataController::class, 'edit'])
-             ->name('userdata.edit');
+            ->name('userdata.edit');
+
+         Route::put('/admin/users/{user}', [UserDataController::class, 'update'])
+            ->name('userdata.update'); 
 
         Route::get('/admin/users/search', [UserDataController::class, 'liveSearch'])
             ->name('userdata.liveSearch');
@@ -145,9 +149,7 @@ Route::delete('/pupils/{id}', [PupilDataController::class, 'destroy'])
         Route::put('/admin/users/{user}', [UserDataController::class, 'update'])
             ->name('userdata.update');
 
-        Route::post('/admin/users/{user}', [UserDataController::class, 'store'])
-            ->name('userdata.store');  
-            
+                    
         Route::delete('/admin/users/{user}', [UserDataController::class, 'destroy'])
             ->name('userdata.delete');      
 
@@ -205,9 +207,9 @@ Route::delete('/pupils/{id}', [PupilDataController::class, 'destroy'])
 
 Route::middleware(['auth', \App\Http\Middleware\HoDOnly::class])->group(function () {
 
-Route::get('/createpupil', [PupilDataController::class, 'CreatePupilForm'])->name('CreatePupil');
+Route::get('/pupil/create', [PupilDataController::class, 'CreatePupilForm'])->name('CreatePupil');
 
-Route::post('/createpupil', [PupilDataController::class, 'store']) ->name('pupildata.store');
+Route::post('/pupil/store', [PupilDataController::class, 'store']) ->name('pupildata.store');
 
 
 Route::get('/createclass', [ClassListsController::class, 'CreateClassForm'])->name('CreateClass');

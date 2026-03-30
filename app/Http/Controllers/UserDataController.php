@@ -117,6 +117,7 @@ if ($user->user_type == 3 && $hodSubject) {
     {
         return view('admincontrols/createuser');
     }
+    
 
 
     /**
@@ -142,8 +143,8 @@ if ($user->user_type == 3 && $hodSubject) {
             'password' => Hash::make($request->password)
         ]);
 
-        return redirect()->route('CreateUser')->with('success', 'UserData created successfully.');
-    }
+       return redirect()->route('CreateUser.show')->with('success', 'UserData created successfully.');
+}
 
 
     // Search for an existing user to update
