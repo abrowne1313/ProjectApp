@@ -113,7 +113,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminOnly::class])->group(functi
 Route::get('/admin', [UserDataController::class, 'AdminControls'])
     ->name('AdminControls');
 
- Route::get('/user_manager', function () {return view('admincontrols.UserManager');
+ Route::get('/user_manager', function () {return view('AdminControls.UserManager');
 })->name('user.manager');
 
     //Show all info for single user
