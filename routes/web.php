@@ -43,7 +43,7 @@ Route::get('/dashboard', [UserDataController::class, 'index'])
     ->name('dashboard');
 
 Route::get('/classes/{class}', [ClassListsController::class, 'show'])
-    ->name('classes.');
+    ->name('classes');
 
  Route::get('/changePassword', [UserDataController::class, 'ChangeOwnPassword']) 
     ->name('ChangePassword' );
@@ -107,13 +107,18 @@ Route::get('/pupils/{pupil}/subject/{subjectID}/revision-pack',[PupilScoresContr
     
 });
 
-   Route::get('/user_manager', function () {return view('AdminControls.UserManager');
-})->name('user.manager');
+
 // ******************{{ CONTROLS FOR ADMIN ONLY }}************************************
 Route::middleware(['auth', \App\Http\Middleware\AdminOnly::class])->group(function () {
 Route::get('/admin', [UserDataController::class, 'AdminControls'])
     ->name('AdminControls');
 
+Route::get('/user_manager', function () {
+    return "The route is working!"; 
+});
+
+//    Route::get('/user_manager', function () {return view('AdminControls.UserManager');
+// })->name('user.manager');
 
 
     //Show all info for single user

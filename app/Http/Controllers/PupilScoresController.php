@@ -122,9 +122,9 @@ public function saveScores(Request $request, $classId)
         }
     }
 
-    return redirect()
-        ->back()
-        ->with('status', 'Scores and targets saved successfully.');
+return redirect()
+->route('class.pupils', $classId)
+->with('status', 'Saved!');
 }
 
    /**
