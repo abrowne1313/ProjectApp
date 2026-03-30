@@ -202,7 +202,7 @@ Route::delete('/pupils/{id}', [PupilDataController::class, 'destroy'])
 
 // ******************{{ CONTROLS FOR HOD USERS }}************************************
 
-Route::middleware(['auth', \App\Http\Middleware\HoDOnly::class])->group(function () {
+Route::middleware(['auth', \App\Http\Middleware\HodOnly::class])->group(function () {
 
 Route::get('/pupil/create', [PupilDataController::class, 'CreatePupilForm'])->name('CreatePupil');
 
