@@ -107,14 +107,14 @@ Route::get('/pupils/{pupil}/subject/{subjectID}/revision-pack',[PupilScoresContr
     
 });
 
-  
+   Route::get('/user_manager', function () {return view('AdminControls.UserManager');
+})->name('user.manager');
 // ******************{{ CONTROLS FOR ADMIN ONLY }}************************************
 Route::middleware(['auth', \App\Http\Middleware\AdminOnly::class])->group(function () {
 Route::get('/admin', [UserDataController::class, 'AdminControls'])
     ->name('AdminControls');
 
- Route::get('/user_manager', function () {return view('AdminControls.UserManager');
-})->name('user.manager');
+
 
     //Show all info for single user
 Route::get('/userinfofull/{id}', [UserDataController::class, 'showAdminView'])   
