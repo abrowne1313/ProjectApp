@@ -117,7 +117,11 @@ if ($user->user_type == 3 && $hodSubject) {
     {
         return view('admincontrols/createuser');
     }
-    
+       
+    public function UserManagerView()
+    {
+        return view('admincontrols/UserManager');
+    }
 
 
     /**
