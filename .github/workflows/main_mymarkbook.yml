@@ -35,7 +35,7 @@ jobs:
           files: 'composer.json'
 
       - name: Run composer install
-        run: composer install --prefer-dist --no-dev --optimize-autoloader --no-progress
+        run: composer install --prefer-dist --no-dev --optimize-autoloader --no-progress --no-scripts
 
       - name: Install NPM and Build Assets (Vite)
         run: |
