@@ -107,7 +107,7 @@ if ($user->user_type == 3 && $hodSubject) {
     public function AdminControls()
     {
         $users = UserData::all();
-        return view('admincontrols/admin', compact('users'));
+        return view('AdminControls/admin', compact('users'));
     }
 
     /**
@@ -115,12 +115,12 @@ if ($user->user_type == 3 && $hodSubject) {
      */
     public function CreateUserForm()
     {
-        return view('admincontrols/createuser');
+        return view('AdminControls/CreateUser');
     }
        
     public function UserManagerView()
     {
-        return view('admincontrols/UserManager');
+        return view('AdminControls/UserManager');
     }
 
 
@@ -176,7 +176,7 @@ public function liveSearch(Request $request)
 
 public function GetEditUserPage()
 {
-    return view('admincontrols/edituserdata');
+    return view('AdminControls/EditUserData');
 }
 
     /**
@@ -184,7 +184,7 @@ public function GetEditUserPage()
      */
 public function edit(UserData $user)
 {
-    return view('admincontrols/edituserdata', compact('user'));
+    return view('AdminControls/EditUserData', compact('user'));
 }
 
     /**
@@ -221,7 +221,7 @@ public function edit(UserData $user)
     {
         UserData::findOrFail($id)->delete();
 
-        return redirect()->route('admincontrols/admin')->with('success', 'UserData deleted successfully.');
+        return redirect()->route('AdminControls/admin')->with('success', 'UserData deleted successfully.');
     }
 
     // Controllers for user to change their own password
@@ -310,6 +310,6 @@ public function showAdminView($id)
 
     $classes = $user->classes; 
 
-    return view('admincontrols/UserDetails', compact('user', 'classes'));
+    return view('AdminControls/UserDetails', compact('user', 'classes'));
 }
 } 

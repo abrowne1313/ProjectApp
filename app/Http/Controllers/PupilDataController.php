@@ -56,7 +56,7 @@ public function PupilManager()
 {
     $pupils = PupilData::with(['classes.teacher'])->get();
 
-    return view('admincontrols/PupilManager', compact('pupils'));
+    return view('AdminControls/PupilManager', compact('pupils'));
 }
 
 /**
