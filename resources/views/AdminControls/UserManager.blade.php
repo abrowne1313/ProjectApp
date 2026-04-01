@@ -8,7 +8,7 @@
     
 
 
-    <a href="{{ route('CreateUser') }}">
+    <a href="{{ route('CreateUser.show') }}">
     <button type="button">Create New User</button>
 
         <a href="{{ route('ChangeAnyUserPassword') }}">
