@@ -74,11 +74,18 @@ public function edit(ClassLists $class)
         ->orderBy('Surname')
         ->get();
 
+        $subjects = Subject::select('Subject')
+        ->orderBy('Subject')
+        ->get();    
+
     return view('admincontrols.EditClass', [
         'class' => $class,
-        'teachers' => $teachers
+        'teachers' => $teachers,
+        'Subject' =>$subjects
     ]);
 }
+
+
 
 /**
  * Update class
