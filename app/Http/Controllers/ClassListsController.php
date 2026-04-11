@@ -81,7 +81,7 @@ public function edit(ClassLists $class)
     return view('admincontrols.EditClass', [
         'class' => $class,
         'teachers' => $teachers,
-        'Subject' =>$subjects
+        'subjects' =>$subjects
     ]);
 }
 

@@ -3,7 +3,31 @@
 @section('title', 'Class Pupils')
 
 @section('content')
+<style>
+    /* CSS to narrow the forms to produce a cleaner look */
+    .score-input {
+        width: 65px !important; /* Fixed width for scores */
+        padding: 4px 2px;
+        text-align: center;
+        margin: 0 auto;
+    }
 
+    /* Adjust table cell padding to keep it tight */
+    .table td, .table th {
+        padding: 0.5rem 0.25rem !important;
+        vertical-align: middle;
+    }
+
+    /* Styling for colored background cells */
+    .score-green { background-color: #d4edda !important; }
+    .score-amber { background-color: #fff3cd !important; }
+    .score-red   { background-color: #f8d7da !important; }
+
+    .table td:first-child {
+        min-width: 150px;
+        white-space: nowrap;
+    }
+</style>
 <h1>{{ $class->ClassName }}</h1>
 <p><strong>Subject:</strong> {{ $class->Subject }}</p>
 <p><strong>Teacher:</strong>
