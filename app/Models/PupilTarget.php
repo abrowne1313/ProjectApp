@@ -20,9 +20,9 @@ class PupilTarget extends Model
     
     ];
 
-    public function subject()
+public function subject()
 {
-    return $this->belongsTo(Subject::class, 'Subject_id');
+return $this->belongsTo(Subject::class, 'Subject_id');
 }
 
     public function pupil()

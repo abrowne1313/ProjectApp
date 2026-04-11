@@ -14,7 +14,7 @@ class RevisionListsFactory extends Factory
     {
         return [
             'topic_id' => Topics::factory(),
-            'content'  => fake()->paragraph(),
+            'content' => fake()->paragraph(),
         ];
     }
 }

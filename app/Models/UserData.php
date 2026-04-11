@@ -13,38 +13,25 @@ class UserData extends Authenticatable
     protected $table = 'user_data';   // From php MyAdmin
     protected $primaryKey = 'id';     
 
-    protected $fillable = [
-        'FirstName',
-        'Surname',
-        'UserEmail',
-        'password',
-        'user_type',
-    ];
+    protected $fillable = ['FirstName','Surname','UserEmail','password','user_type', ];
 
     public function type()
-{
-   
-    return $this->belongsTo(user_type::class, 'user_type', 'id');
-}
+{ return $this->belongsTo(user_type::class, 'user_type', 'id');}
 
     // A teacher can have many classes
     public function classes()
-    {
-        return $this->hasMany(ClassLists::class, 'teacher_id');
+    { return $this->hasMany(ClassLists::class, 'teacher_id');
     }
-
-    public function getAuthPassword()
-    {
-        return $this->password;
+public function getAuthPassword()
+    { return $this->password;
     }
 
 // Tell larael to use UserEmail and not email when logging in
 public function getAuthIdentifierName()
-{
-    return 'UserEmail';
+{return 'UserEmail';
 }
 
-        public function getEmailForPasswordReset()
+ public function getEmailForPasswordReset()
     {
         return $this->UserEmail;
     }

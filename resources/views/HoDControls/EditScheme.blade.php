@@ -21,22 +21,22 @@
                 <div class="d-flex align-items-center flex-shrink-1">
                     <span class="handle me-3" style="cursor: grab;">☰</span>
 
-                    <input type="text"
-                           name="topics[{{ $topic->id }}][Title]"
-                           value="{{ $topic->Title }}"
-                           class="form-control me-3"
-                           style="width: 40%; min-width: 200px;">
+                <input type="text"
+                     name="topics[{{ $topic->id }}][Title]"
+                     value="{{ $topic->Title }}"
+                     class="form-control me-3"
+                     style="width: 40%; min-width: 200px;">
 
-                    <input type="number"
-                           name="topics[{{ $topic->id }}][MaxTestScore]"
-                           value="{{ $topic->MaxTestScore }}"
-                           class="form-control me-3"
-                           style="width: 20%; min-width: 100px;">
+                <input type="number"
+                     name="topics[{{ $topic->id }}][MaxTestScore]"
+                     value="{{ $topic->MaxTestScore }}"
+                     class="form-control me-3"
+                     style="width: 20%; min-width: 100px;">
 
-                    <input type="hidden"
-                           name="topics[{{ $topic->id }}][TeachingOrder]"
-                           class="order-field"
-                           value="{{ $topic->TeachingOrder }}">
+               <input type="hidden"
+                      name="topics[{{ $topic->id }}][TeachingOrder]"
+                      class="order-field"
+                      value="{{ $topic->TeachingOrder }}">
                 </div>
 
                 {{-- DELETE BUTTON (triggers hidden form below main form) --}}

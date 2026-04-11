@@ -60,6 +60,49 @@ public function PupilManager()
 }
 
 /**
+ * Show the form for editing the specified pupil.
+ */
+public function edit($id)
+{
+    // Authorization check (matching your destroy logic)
+    if (auth()->user()->user_type >= 3) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    $pupil = PupilData::findOrFail($id);
+
+    return view('admincontrols.EditPupil', compact('pupil'));
+}
+
+/**
+ * Update the specified pupil in storage.
+ */
+public function update(Request $request, $id)
+{
+    if (auth()->user()->user_type >= 3) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    $pupil = PupilData::findOrFail($id);
+
+    $request->validate([
+        'FirstName'   => 'required|string|max:255',
+        'Surname'     => 'required|string|max:255',
+        'YearGroup'   => 'required|string|max:255',
+        'DateOfBirth' => 'required|date|date_format:Y-m-d|before:today',
+        'Gender'      => 'required|string|max:255',
+        'FormClass'   => 'required|string|max:255',
+        'SEN'         => 'nullable|string|max:255',
+        'Medical'     => 'nullable|string|max:255',
+    ]);
+
+    $pupil->update($request->all());
+
+    return redirect()
+        ->route('pupil.manager')
+        ->with('success', 'Pupil updated successfully.');
+}
+/**
  * Remove the specified pupil from storage.
  */
 public function destroy($id)

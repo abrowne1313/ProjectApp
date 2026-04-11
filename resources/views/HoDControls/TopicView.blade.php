@@ -54,9 +54,9 @@
         plugins: 'lists link code wordcount',
         toolbar: 'undo redo | bold italic | bullist numlist | link | removeformat code',
         setup: function (editor) {
-            editor.on('change', function () {
-                editor.save(); {{-- Forces sync with the textarea --}}
-            });
+        editor.on('change', function () {
+        editor.save(); {{-- Forces sync with the textarea --}}
+        });
         },
         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
     });

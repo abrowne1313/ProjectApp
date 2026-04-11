@@ -13,9 +13,9 @@ class PupilScores extends Model
     protected $primaryKey = 'id';     
     
     protected $fillable = [
-        'Pupil_id' ,
-        'Topic_id',
-        'Score' 
+    'Pupil_id' ,
+    'Topic_id',
+    'Score' 
     
     ];
 
@@ -23,12 +23,12 @@ class PupilScores extends Model
 
     public function pupil()
     {
-        return $this->belongsTo(pupildata::class, 'Pupil_id');
+     return $this->belongsTo(pupildata::class, 'Pupil_id');
     }
 
     public function topic()
     {
-        return $this->belongsTo(Topics::class, 'Topic_id');
+    return $this->belongsTo(Topics::class, 'Topic_id');
     }
 
 

@@ -20,12 +20,12 @@
 <h3>Topics</h3>
 
 <div id="topics">
-    <div class="topic-row">
-        <input type="text" name="topics[]" placeholder="Topic name" required>
-        <input type="number" name="max_scores[]" placeholder="Max score" min="1">
-            <button type="button"
-            class="btn btn-outline-danger btn-sm delete-topic ms-3"
-            style="white-space: nowrap;">
+<div class="topic-row">
+<input type="text" name="topics[]" placeholder="Topic name" required>
+<input type="number" name="max_scores[]" placeholder="Max score" min="1">
+    <button type="button"
+    class="btn btn-outline-danger btn-sm delete-topic ms-3"
+    style="white-space: nowrap;">
         <i class="bi bi-trash"></i>
     </button>
     </div>
@@ -40,14 +40,14 @@
 <script>
 function addTopic() {
     document.getElementById('topics').insertAdjacentHTML(
-        'beforeend',
-        `<div class="topic-row">
-            <input type="text" name="topics[]" placeholder="Topic name" required>
-            <input type="number" name="max_scores[]" placeholder="Max score" min="1">
-                <button type="button"
-            class="btn btn-outline-danger btn-sm delete-topic ms-3"
-            style="white-space: nowrap;">
-        <i class="bi bi-trash"></i>
+    'beforeend',
+    `<div class="topic-row">
+     <input type="text" name="topics[]" placeholder="Topic name" required>
+    <input type="number" name="max_scores[]" placeholder="Max score" min="1">
+    <button type="button"
+    class="btn btn-outline-danger btn-sm delete-topic ms-3"
+    style="white-space: nowrap;">
+    <i class="bi bi-trash"></i>
     </button>
         </div>`
     );

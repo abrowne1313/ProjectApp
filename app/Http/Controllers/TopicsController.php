@@ -15,8 +15,8 @@ class TopicsController extends Controller
 
 public function show($id) {
     $topic = Topics::with([
-        'scheme.subject', // load scheme + subject 
-         // load subtopics 
+        'scheme.subject', // load scheme & subject 
+         // load topic LI 
         ])->findOrFail($id);
 
         return view('HoDControls.TopicView', compact('topic')); 

@@ -100,25 +100,21 @@ public function create()
 public function SubjectOverview(Request $request) 
 { 
     $user = auth()->user(); 
-    // Matching your user_type logic from the blade (1 or 2 often denotes Admin/HoD)
+    // SHows drop down of all subject overviews for admin users or centre admin
     $isAdmin = in_array($user->user_type, [1, 2]); 
 
     if ($isAdmin) { 
         $subjects = Subject::all();
     } else { 
-        // Assuming your HoD relationship is set up
-        $subjects = Subject::where('HoD_Teacher_id', $user->id)->get(); 
+                $subjects = Subject::where('HoD_Teacher_id', $user->id)->get(); 
     } 
 
     if ($subjects->isEmpty()) { 
         abort(403, 'No subjects available.'); 
     }
-
-    // Determine the ID: Input first, then Session, then first available subject
     $activeSubjectId = $request->get('subject_id', session('active_subject_id', $subjects->first()->id)); 
 
-    // Safety check: Ensure the user has permission for this specific subject
-    if (!$isAdmin && !$subjects->contains('id', $activeSubjectId)) { 
+      if (!$isAdmin && !$subjects->contains('id', $activeSubjectId)) { 
         $activeSubjectId = $subjects->first()->id; 
     }
 
@@ -126,9 +122,9 @@ public function SubjectOverview(Request $request)
 
     $activeSubject = $subjects->where('id', $activeSubjectId)->first(); 
     
-    // Efficiently get schemes and count their related topics
+   
     $schemes = Schemes::where('Subject_id', $activeSubject->id) 
-        ->withCount('topics') // This creates a 'topics_count' attribute
+        ->withCount('topics') 
         ->orderBy('YearGroup','asc') 
         ->get(); 
     

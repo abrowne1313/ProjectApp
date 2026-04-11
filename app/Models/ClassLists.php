@@ -9,31 +9,31 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ClassLists extends model
 {
-    use HasFactory, Notifiable;
-    protected $table = 'class_lists';   // From php MyAdmin
-    protected $primaryKey = 'id';     
+        use HasFactory, Notifiable;
+        protected $table = 'class_lists';   // From php MyAdmin
+        protected $primaryKey = 'id';     
 
-    protected $fillable = [
-        'ClassName' ,
-        'YearGroup',
-        'Subject',
-        'teacher_id'
-    
-    ];
+        protected $fillable = [
+            'ClassName' ,
+            'YearGroup',
+            'Subject',
+            'teacher_id'
+        
+        ];
 // Pupils can be in more than one class
      public function pupils()
     {
-        return $this->belongsToMany(
-            PupilData::class,
-            'class_pupil',
-            'class_id',
-            'pupil_id'
-        );
+            return $this->belongsToMany(
+                PupilData::class,
+                'class_pupil',
+                'class_id',
+                'pupil_id'
+            );
     }
         // Each class belongs to one teacher
     public function teacher()
     {
-        return $this->belongsTo(UserData::class, 'teacher_id');
+            return $this->belongsTo(UserData::class, 'teacher_id');
     }
 
 
@@ -44,7 +44,7 @@ class ClassLists extends model
 
 public function scheme()
 {
-    return $this->hasOne(Schemes::class, 'Subject_id', 'subjectModel.id')
+         return $this->hasOne(Schemes::class, 'Subject_id', 'subjectModel.id')
                 ->where('YearGroup', $this->YearGroup);
 }
 

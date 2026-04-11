@@ -126,7 +126,12 @@ Route::get('/userinfofull/{id}', [UserDataController::class, 'showAdminView'])
 Route::get('/pupil_manager', [PupilDataController::class, 'PupilManager'])
     ->name('pupil.manager');  
     
+Route::get('/pupil/{id}/edit', [PupilDataController::class, 'edit'])
+    ->name('pupil.edit');
     
+Route::put('/pupil/{id}', [PupilDataController::class, 'update'])
+    ->name('pupil.update');
+
 Route::delete('/pupils/{id}', [PupilDataController::class, 'destroy'])
     ->name('pupils.destroy');
     // Create new user tools-  

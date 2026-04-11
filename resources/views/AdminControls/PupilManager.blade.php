@@ -43,7 +43,7 @@
                 </td>
                 <td>
                     <form action="{{ route('pupils.destroy', $pupil->id) }}" method="POST" 
-      onsubmit="return confirm('Are you sure you want to delete this pupil? This action cannot be undone.');" 
+                      onsubmit="return confirm('Are you sure you want to delete this pupil? This action cannot be undone.');" 
       style="display:inline;">
     @csrf
     @method('DELETE')
@@ -51,6 +51,7 @@
         <i class="bi bi-trash"></i> Delete
     </button>
 </form>
+ <a href="{{ route('pupil.edit', $pupil->id) }}" class="btn btn-sm btn-outline-secondary">Edit Pupil Details</a>
 </td>
             </tr>
             

@@ -13,14 +13,14 @@ class Schemes extends Model
     protected $primaryKey = 'id';     
     
     protected $fillable = [
-        'Subject_id' ,
-        'YearGroup',
-        'CreatedBy' 
+    'Subject_id' ,
+    'YearGroup',
+    'CreatedBy' 
     
     ];
 
     public function subject() {
-    return $this->belongsTo(Subject::class, 'Subject_id');
+     return $this->belongsTo(Subject::class, 'Subject_id');
 }
 
 public function topics() {
@@ -28,6 +28,6 @@ public function topics() {
 }
 
 public function creator() { 
-    return $this->belongsTo(UserData::class, 'CreatedBy'); 
+ return $this->belongsTo(UserData::class, 'CreatedBy'); 
     }
 }

@@ -12,8 +12,8 @@ class revisionlists extends Model
     protected $primaryKey = 'id';     
     
     protected $fillable = [
-        'topic_id' ,
-        'content'
+     'topic_id' ,
+    'content'
     
     ];
 

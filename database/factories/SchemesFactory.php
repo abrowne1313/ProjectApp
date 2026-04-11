@@ -15,8 +15,8 @@ class SchemesFactory extends Factory
     {
         return [
             'Subject_id' => Subject::factory(),
-            'YearGroup'  => fake()->numberBetween(8, 14),
-            'CreatedBy'  => UserData::factory(),
+            'YearGroup' => fake()->numberBetween(8, 14),
+            'CreatedBy' => UserData::factory(),
         ];
     }
 }

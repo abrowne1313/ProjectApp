@@ -14,7 +14,7 @@ class PupilDataFactory extends Factory
      *
      * @return array<string, mixed>
      */
-// database/factories/PupilDataFactory.php
+
 public function definition(): array
 {
     return [

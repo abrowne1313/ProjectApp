@@ -64,13 +64,13 @@
 
         <tfoot class="table-light">
             <tr>
-                <th>Average Score</th>
-                <th class="text-center">
-                    {{ round($scores->avg('Score'), 1) }}
-                </th>
-            </tr>
-        </tfoot>
-    </table>
+  <th>Average Score</th>
+ <th class="text-center">
+  {{ round($scores->avg('Score'), 1) }}
+   </th>
+ </tr>
+ </tfoot>
+   </table>
 
 </div>
 @endsection

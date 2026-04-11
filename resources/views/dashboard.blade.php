@@ -38,15 +38,15 @@
                     @foreach ($classes as $class)
                     <h1> </h1>
                         <div class="col-md-6 col-lg-4">
-                            <a href="{{ route('class.pupils', $class->id) }}" class="text-decoration-none">
-                                <div class="card h-100 border-0 shadow-sm scheme-card">
-                                    <div class="card-body p-4">
-                                        <h3 class="h5 mb-1 text-dark">{{ $class->ClassName }}</h3>
-                                        <span class="text-muted small">{{ $class->Subject }}</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                  <a href="{{ route('class.pupils', $class->id) }}" class="text-decoration-none">
+                    <div class="card h-100 border-0 shadow-sm scheme-card">
+                    <div class="card-body p-4">
+                       <h3 class="h5 mb-1 text-dark">{{ $class->ClassName }}</h3>
+                    <span class="text-muted small">{{ $class->Subject }}</span>
+                    </div>
+                    </div>
+                     </a>
+                 </div>
                     @endforeach
                 </div>
             @endif
@@ -58,20 +58,20 @@
             <h2 class="h4 mb-3">Select a Subject to View Schemes</h2>
 
             <div class="card border-0 shadow-sm mb-4 bg-light">
-                <div class="card-body">
-                    <form method="GET" action="{{ route('dashboard') }}" class="col-md-4">
-                        <input type="hidden" name="tab" value="schemes">
+            <div class="card-body">
+                <form method="GET" action="{{ route('dashboard') }}" class="col-md-4">
+                    <input type="hidden" name="tab" value="schemes">
                         <select name="subject_id" class="form-select border-0 shadow-sm" onchange="this.form.submit()">
-                            <option value="">Choose a subject...</option>
-                            @foreach ($subjects as $subject)
-                                <option value="{{ $subject->id }}"
-                                    {{ request('subject_id') == $subject->id ? 'selected' : '' }}>
-                                    {{ $subject->Subject }}
-                                </option>
+                     <option value="">Choose a subject...</option>
+                         @foreach ($subjects as $subject)
+                             <option value="{{ $subject->id }}"
+                                {{ request('subject_id') == $subject->id ? 'selected' : '' }}>
+                                {{ $subject->Subject }}
+                             </option>
                             @endforeach
-                        </select>
+                    </select>
                     </form>
-                </div>
+            </div>
             </div>
 
             @if(isset($schemes) && $selectedSubject)
@@ -83,15 +83,15 @@
                     <div class="row g-4"> {{-- Numerical sorting happens in controller or via ->sortBy --}}
                         @foreach ($schemes->sortBy('YearGroup') as $scheme)
                         <h1></h1>
-                            <div class="col-md-6 col-lg-4">
-                                <a href="{{ route('schemes.show', $scheme->id) }}" class="text-decoration-none">
-                                    <div class="card h-100 border-0 shadow-sm scheme-card">
-                                        <div class="card-body p-4">
-                                            <h3 class="h5 mb-1 text-dark">Year {{ $scheme->YearGroup }}</h3>
-                                            <span class="text-muted small">{{ $selectedSubject->Subject }}</span>
-                                        </div>
-                                    </div>
-                                </a>
+                         <div class="col-md-6 col-lg-4">
+                           <a href="{{ route('schemes.show', $scheme->id) }}" class="text-decoration-none">
+                           <div class="card h-100 border-0 shadow-sm scheme-card">
+                               <div class="card-body p-4">
+                                  <h3 class="h5 mb-1 text-dark">Year {{ $scheme->YearGroup }}</h3>
+                             <span class="text-muted small">{{ $selectedSubject->Subject }}</span>
+                                </div>
+                            </div>
+                           </a>
                             </div>
                         @endforeach
                     </div>
@@ -108,76 +108,75 @@
         </div>
 
         <div class="card border-0 shadow-sm mb-4 bg-light">
-            <div class="card-body">
-                <form method="GET" action="{{ route('dashboard') }}" class="row g-2">
-                    <input type="hidden" name="tab" value="departmentalClasses">
+        <div class="card-body">
+          <form method="GET" action="{{ route('dashboard') }}" class="row g-2">
+         <input type="hidden" name="tab" value="departmentalClasses">
                     
-                    <div class="col-md-3">
-                        <select name="year_group" class="form-select form-select-sm border-0 shadow-sm" onchange="this.form.submit()">
-                            <option value="">All Year Groups</option>
+        <div class="col-md-3">
+          <select name="year_group" class="form-select form-select-sm border-0 shadow-sm" onchange="this.form.submit()">
+           <option value="">All Year Groups</option>
                             @foreach(range(8, 14) as $year)
-                                <option value="{{ $year }}" {{ request('year_group') == $year ? 'selected' : '' }}>Year {{ $year }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="col-md-3">
-                        <select name="teacher_id" class="form-select form-select-sm border-0 shadow-sm" onchange="this.form.submit()">
-                            <option value="">All Teachers</option>
-                            @foreach($departmentTeachers as $t)
-                            <h1></h1>
-                                <option value="{{ $t->id }}" {{ request('teacher_id') == $t->id ? 'selected' : '' }}>
-                                    {{ $t->Surname }}, {{ substr($t->FirstName, 0, 1) }}.
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="col-md-2">
-                        <a href="{{ route('dashboard', ['tab' => 'departmentalClasses']) }}" class="btn btn-sm btn-outline-secondary w-100">Clear</a>
-                    </div>
-                </form>
-            </div>
+                <option value="{{ $year }}" {{ request('year_group') == $year ? 'selected' : '' }}>Year {{ $year }}</option>
+                      @endforeach
+            </select>
         </div>
 
-        @php
-            // Apply filtering logic to the collection
-            $filteredClasses = $departmentalClasses
-                ->when(request('year_group'), function($query) {
-                    return $query->where('YearGroup', request('year_group'));
-                })
-                ->when(request('teacher_id'), function($query) {
-                    return $query->where('Teacher_id', request('teacher_id'));
-                })
-                ->sortBy('YearGroup'); // Sort numerically
-        @endphp
+        <div class="col-md-3">
+          <select name="teacher_id" class="form-select form-select-sm border-0 shadow-sm" onchange="this.form.submit()">
+            <option value="">All Teachers</option>
+                 @foreach($departmentTeachers as $t)
+            <h1></h1>
+            <option value="{{ $t->id }}" {{ request('teacher_id') == $t->id ? 'selected' : '' }}>
+              {{ $t->Surname }}, {{ substr($t->FirstName, 0, 1) }}.
+                </option>
+                @endforeach
+         </select>
+        </div>
 
-        @if ($filteredClasses->isEmpty())
-            <div class="text-center py-5 bg-white rounded shadow-sm">
-                <p class="text-muted mb-0">No classes match those filters.</p>
-            </div>
+        <div class="col-md-2">
+          <a href="{{ route('dashboard', ['tab' => 'departmentalClasses']) }}" class="btn btn-sm btn-outline-secondary w-100">Clear</a>
+          </div>
+ </form>
+ </div>
+ </div>
+
+  @php
+    // Apply filtering logic to the collection
+     $filteredClasses = $departmentalClasses
+      ->when(request('year_group'), function($query) {
+       return $query->where('YearGroup', request('year_group'));
+   })
+ ->when(request('teacher_id'), function($query) {
+ return $query->where('Teacher_id', request('teacher_id'));})
+                ->sortBy('YearGroup'); // Sort numerically
+ @endphp
+
+ @if ($filteredClasses->isEmpty())
+    <div class="text-center py-5 bg-white rounded shadow-sm">
+        <p class="text-muted mb-0">No classes match those filters.</p>
+    </div>
         @else
 <div class="row g-5"> 
     @foreach ($filteredClasses as $class)
-        <div class="col-md-6 col-lg-4">
-            <a href="{{ route('class.pupils', $class->id) }}" class="text-decoration-none">
-                <div class="card h-100 border-0 shadow-sm scheme-card">
-                    <div class="card-body p-3"> 
+<div class="col-md-6 col-lg-4">
+    <a href="{{ route('class.pupils', $class->id) }}" class="text-decoration-none">
+<div class="card h-100 border-0 shadow-sm scheme-card">
+<div class="card-body p-3"> 
                         
-                        <h3 class="h5 mb-0 text-dark fw-bold">{{ $class->ClassName }}</h3>
+  <h3 class="h5 mb-0 text-dark fw-bold">{{ $class->ClassName }}</h3>
                         
-                        <div class="text-muted small mb-2">{{ $class->Subject }}</div>
+<div class="text-muted small mb-2">{{ $class->Subject }}</div>
                         
-                        <div class="pt-2 border-top">
-                            <div class="small text-dark">
-                                <strong>Class Teacher:</strong> {{ optional($class->teacher)->FirstName }} {{ optional($class->teacher)->Surname }}
-                            </div>
-                        </div>
+<div class="pt-2 border-top">
+<div class="small text-dark">
+    <strong>Class Teacher:</strong> {{ optional($class->teacher)->FirstName }} {{ optional($class->teacher)->Surname }}
+</div>
+</div>
 
-                    </div>
-                </div>
-            </a>
-        </div>
+</div>
+</div>
+ </a>
+ </div>
     @endforeach
 </div>
 </div>

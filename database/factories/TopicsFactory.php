@@ -13,10 +13,10 @@ class TopicsFactory extends Factory
     public function definition()
     {
         return [
-            'Scheme_id'     => Schemes::factory(),
-            'Title'         => fake()->sentence(3),
-            'MaxTestScore'  => fake()->numberBetween(10, 100),
-            'TeachingOrder' => fake()->numberBetween(1, 20),
+            'Scheme_id' => Schemes::factory(),
+            'Title' => fake()->sentence(3),
+            'MaxTestScore' => fake()->numberBetween(10, 100),
+            'TeachingOrder'=> fake()->numberBetween(1, 20),
         ];
     }
 }

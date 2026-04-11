@@ -8,26 +8,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Topics extends Model
 {
-           use HasFactory, Notifiable;
+use HasFactory, Notifiable;
     protected $table = 'topics';   // From php MyAdmin
     protected $primaryKey = 'id';     
     
     protected $fillable = [
-        'Scheme_id' ,
-        'Title',
-        'MaxTestScore',
-        'TeachingOrder' 
+    'Scheme_id' ,
+    'Title',
+    'MaxTestScore',
+    'TeachingOrder' 
     
     ];
 
-    public function scheme() {
-    return $this->belongsTo(Schemes::class, 'Scheme_id');
-}
+    public function scheme() { return $this->belongsTo(Schemes::class, 'Scheme_id');}
 
 public function revisionlist()
-{
-    return $this->hasOne(revisionLists::class, 'topic_id', 'id');
-}
+{return $this->hasOne(revisionLists::class, 'topic_id', 'id');}
 
 
 }

@@ -23,8 +23,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('live-search');
-    const resultsBox = document.getElementById('search-results');
-
+    
     searchInput.addEventListener('input', function() {
         let query = this.value;
 

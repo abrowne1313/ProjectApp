@@ -13,18 +13,15 @@ class Subject extends Model
     protected $primaryKey = 'id';     
     
     protected $fillable = [
-        'Subject' ,
-        'HoD_Teacher_id' 
+     'Subject' ,
+    'HoD_Teacher_id' 
     
     ];
 
-    public function hodTeacher()
-{
-    return $this->belongsTo(UserData::class, 'HoD_Teacher_id');
-}
+public function hodTeacher()
+{return $this->belongsTo(UserData::class, 'HoD_Teacher_id'); }
 
 public function schemes() {
-    return $this->hasMany(Schemes::class);
-}
+return $this->hasMany(Schemes::class); }
 
 }

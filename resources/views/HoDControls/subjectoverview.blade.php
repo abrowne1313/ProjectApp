@@ -14,25 +14,25 @@
         </a>
     </div>
 
-    {{-- Subject Selector: Only visible for Admin (1) or HoD (2) --}}
+    {{-- Subject Selector: Only visible for Admin (1) or centre admin (2) --}}
     @if(in_array(auth()->user()->user_type, [1, 2]))
     <div class="card border-0 shadow-sm mb-4 bg-light">
         <div class="card-body">
-            <form method="GET" action="{{ route('subject.overview') }}" class="row align-items-end">
-                <div class="col-md-4">
-                    <label for="subject_id" class="form-label fw-bold text-secondary small uppercase">
-                        Switch Department View
-                    </label>
-                    <select 
-                        name="subject_id" 
-                        id="subject_id" 
-                        class="form-select border-0 shadow-sm" 
-                        onchange="this.form.submit()"
+    <form method="GET" action="{{ route('subject.overview') }}" class="row align-items-end">
+       <div class="col-md-4">
+        <label for="subject_id" class="form-label fw-bold text-secondary small uppercase">
+                Switch Department View
+         </label>
+          <select 
+            name="subject_id" 
+            id="subject_id" 
+            class="form-select border-0 shadow-sm" 
+            onchange="this.form.submit()"
                     >
-                        @foreach ($subjects as $subj)
-                            <option value="{{ $subj->id }}" {{ $activeSubject->id === $subj->id ? 'selected' : '' }}>
-                                {{ $subj->Subject }}
-                            </option>
+              @foreach ($subjects as $subj)
+                 <option value="{{ $subj->id }}" {{ $activeSubject->id === $subj->id ? 'selected' : '' }}>
+                       {{ $subj->Subject }}
+               </option>
                         @endforeach
                     </select>
                 </div>
@@ -53,20 +53,19 @@
         <div class="col-md-6 col-lg-4 mb-5">
             @foreach ($schemes as $scheme)
                 <div class="col-md-6 col-lg-4">
-                    <a href="{{ route('schemes.show', $scheme->id) }}" class="text-decoration-none">
-                        <div class="card h-100 border-0 shadow-sm scheme-card">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h3 class="h5 mb-1 text-dark">Year {{ $scheme->YearGroup }}</h3>
-                                    <span class="text-muted small">{{ $activeSubject->Subject }}</span>
-                                </div>
-                                <div class="bg-primary bg-opacity-10 p-2 rounded">
-                           
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+            <a href="{{ route('schemes.show', $scheme->id) }}" class="text-decoration-none">
+               <div class="card h-100 border-0 shadow-sm scheme-card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                <h3 class="h5 mb-1 text-dark">Year {{ $scheme->YearGroup }}</h3>
+                      <span class="text-muted small">{{ $activeSubject->Subject }}</span>
+                  </div>
+                   <div class="bg-primary bg-opacity-10 p-2 rounded">                     
+                 </div>
                 </div>
+           </div>
+          </a>
+           </div>
             @endforeach
         </div>
     @endif

@@ -49,89 +49,84 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th class="rotate"><div>Name</div></th>
-                    <th class="rotate"><div>Form Class</div></th>
-                    <th class="rotate"><div>Target</div></th> 
-                    @foreach ($topics as $topic)
-                        <th class="rotate">
-                            <div><span>{{ $topic->Title }}</span></div>
-                        </th>
-                    @endforeach
-                    <th class ="rotate"><div>Remove Pupil</div></th>
+        <th class="rotate"><div>Name</div></th>
+        <th class="rotate"><div>Form Class</div></th>
+        <th class="rotate"><div>Target</div></th> 
+            @foreach ($topics as $topic)
+         <th class="rotate">
+             <div><span>{{ $topic->Title }}</span></div>
+         </th>
+            @endforeach
+        <th class ="rotate"><div>Remove Pupil</div></th>
                 </tr>
             </thead>
 
-            <tbody>
-                @foreach ($class->pupils as $rowIndex => $pupil)
-                    <tr>
-                        <td>
-                            <a href="{{ route('pupil.scores.overview', $pupil->id) }}">
-                                {{ $pupil->FirstName }} {{ $pupil->Surname }}
-                            </a>
+<tbody>
+     @foreach ($class->pupils as $rowIndex => $pupil)
+         <tr>
+            <td>
+             <a href="{{ route('pupil.scores.overview', $pupil->id) }}">
+                  {{ $pupil->FirstName }} {{ $pupil->Surname }}
+             </a>
+            </td>
+
+            <td>{{ $pupil->FormClass }}</td>
+
+             <td>
+             <input
+                name="targets[{{ $pupil->id }}]"
+                value="{{ $targets[$pupil->id]->Target ?? '' }}"
+                 class="form-control score-input"
+                min="0"
+                max="100"
+                data-row="{{ $rowIndex }}"
+                data-col="target"
+             >
                         </td>
 
-                        <td>{{ $pupil->FormClass }}</td>
+    @foreach ($topics as $colIndex => $topic)
+        @php
+            $key = $pupil->id . '-' . $topic->id;
+             $existingScore = $scores[$key][0]->Score ?? null;
+            $targetValue = $targets[$pupil->id]->Target ?? null;
 
-                        <td>
-                            <input
-                                type="number"
-                                name="targets[{{ $pupil->id }}]"
-                                value="{{ $targets[$pupil->id]->Target ?? '' }}"
-                                class="form-control score-input"
-                                min="0"
-                                max="100"
-                                data-row="{{ $rowIndex }}"
-                                data-col="target"
-                            >
-                        </td>
+            $existingScore = is_numeric($existingScore) ? (float) $existingScore : null;
+            $targetValue = is_numeric($targetValue) ? (float) $targetValue : null;
 
-                        @foreach ($topics as $colIndex => $topic)
-                            @php
-                                $key = $pupil->id . '-' . $topic->id;
-                                $existingScore = $scores[$key][0]->Score ?? null;
-                                $targetValue = $targets[$pupil->id]->Target ?? null;
+             $colourClass = '';
+            if ($existingScore !== null && $targetValue !== null && $targetValue > 0) {
+            $percent = ($existingScore / $targetValue) * 100;
+            if ($percent >= 105) { $colourClass = 'score-green';
+            } elseif ($percent >= 96) { $colourClass = 'score-amber';
+                  } else {$colourClass = 'score-red'; }
+            }
+        @endphp 
 
-                                $existingScore = is_numeric($existingScore) ? (float) $existingScore : null;
-                                $targetValue = is_numeric($targetValue) ? (float) $targetValue : null;
-
-                                $colourClass = '';
-                                if ($existingScore !== null && $targetValue !== null && $targetValue > 0) {
-                                    $percent = ($existingScore / $targetValue) * 100;
-                                    if ($percent >= 105) {
-                                        $colourClass = 'score-green';
-                                    } elseif ($percent >= 96) {
-                                        $colourClass = 'score-amber';
-                                    } else {
-                                        $colourClass = 'score-red';
-                                    }
-                                }
-                            @endphp 
-
-                            <td class="{{ $colourClass }}">
-                                <input
-                                    type="number"
-                                    name="scores[{{ $pupil->id }}][{{ $topic->id }}]"
-                                    value="{{ $existingScore }}"
-                                    class="form-control score-input"
-                                    min="0"
-                                    max="100"
-                                    data-row="{{ $rowIndex }}"
-                                    data-col="{{ $colIndex }}"
+<td class="{{ $colourClass }}">
+     <input
+        type="number"
+        name="scores[{{ $pupil->id }}][{{ $topic->id }}]"
+        value="{{ $existingScore }}"
+        class="form-control score-input"
+         min="0"
+        max="100"
+        data-row="{{ $rowIndex }}"
+        data-col="{{ $colIndex }}"
                                 >
-                            </td>
-                        @endforeach
+ </td>
+     @endforeach
 
-                        <td class="text-center">
-                            {{-- This button triggers the hidden form at the bottom --}}
-                            <button type="button" 
-                                    class="btn btn-sm btn-outline-danger"
-                                    onclick="if(confirm('Remove {{ $pupil->FirstName }} from this class?')) { document.getElementById('delete-form-{{ $pupil->id }}').submit(); }">
-                                <i class="bi bi-x-circle"></i> Remove
-                            </button>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
+<td class="text-center">
+    {{-- Delete button at the end of each row to remove pupil from class --}}
+      <button type="button" 
+    class="btn btn-sm btn-outline-danger"
+        onclick="if(confirm('Remove {{ $pupil->FirstName }} from this class?')) { document.getElementById('delete-form-{{ $pupil->id }}').submit(); }">
+    <i class="bi bi-x-circle"></i> Remove
+          </button>
+ </td>
+ </tr>
+     @endforeach
+        </tbody>
         </table>
     </form>
 @else
@@ -145,12 +140,12 @@
     @csrf
     <h2>Add existing pupil</h2>
     <div class="input-group mb-3" style="max-width: 400px;">
-        <select name="pupil_id" class="form-select" required>
-            <option value="">Select pupil</option>
-            @foreach ($availablePupils as $pupil)
-                <option value="{{ $pupil->id }}">
-                    {{ $pupil->FirstName }} {{ $pupil->Surname }} ({{ $pupil->FormClass }})
-                </option>
+    <select name="pupil_id" class="form-select" required>
+     <option value="">Select pupil</option>
+      @foreach ($availablePupils as $pupil)
+      <option value="{{ $pupil->id }}">
+     {{ $pupil->FirstName }} {{ $pupil->Surname }} ({{ $pupil->FormClass }})
+     </option>
             @endforeach
         </select>
         <button class="btn btn-success" type="submit">Add</button>
@@ -161,11 +156,11 @@
 @if ($class->pupils->count())
     @foreach ($class->pupils as $pupil)
         <form id="delete-form-{{ $pupil->id }}" 
-              action="{{ route('class.pupil.remove', [$class->id, $pupil->id]) }}" 
-              method="POST" 
-              style="display: none;">
-            @csrf
-            @method('DELETE')
+      action="{{ route('class.pupil.remove', [$class->id, $pupil->id]) }}" 
+      method="POST" 
+      tyle="display: none;">
+    @csrf
+    @method('DELETE')
         </form>
     @endforeach
 @endif
@@ -174,25 +169,24 @@
 document.addEventListener("DOMContentLoaded", function () {
     const inputs = document.querySelectorAll(".score-input");
     inputs.forEach(input => {
-        input.addEventListener("keydown", function (e) {
-            const row = parseInt(this.dataset.row);
-            const col = isNaN(this.dataset.col) ? -1 : parseInt(this.dataset.col);
+       input.addEventListener("keydown", function (e) {
+        const row = parseInt(this.dataset.row);
+       const col = isNaN(this.dataset.col) ? -1 : parseInt(this.dataset.col);
 
-            let targetRow = row;
-            let targetCol = col;
+        let targetRow = row;
+        let targetCol = col;
 
-            if (e.key === "ArrowRight") {
-                targetCol = col + 1;
-            } else if (e.key === "ArrowLeft") {
-                targetCol = col - 1;
-            } else if (e.key === "ArrowDown") {
-                targetRow = row + 1;
-            } else if (e.key === "ArrowUp") {
-                targetRow = row - 1;
-            } else {
-                return; 
-            }
+       if (e.key === "ArrowRight") {
+          targetCol = col + 1;
+        } else if (e.key === "ArrowLeft") {
+              targetCol = col - 1;
+        } else if (e.key === "ArrowDown") {
+             targetRow = row + 1;
+        } else if (e.key === "ArrowUp") {
+             targetRow = row - 1;
+      } else {return;
 
+        }
             e.preventDefault();
 
             const next = document.querySelector(

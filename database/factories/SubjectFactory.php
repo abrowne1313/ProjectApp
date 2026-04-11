@@ -13,11 +13,9 @@ class SubjectFactory extends Factory
     public function definition()
     {
         return [
-            'Subject'         => $this->faker->randomElement([
-                'Maths', 'English', 'Science', 'History', 'Geography'               
-            ]),
+            'Subject' => $this->faker->randomElement(['Maths', 'English', 'Science', 'History', 'Geography']),
             'HoD_Teacher_id'  => UserData::factory()->state([
-                'user_type' => 3, // HoD
+                'user_type' => 3, // HoD user
             ]),
         ];
     }

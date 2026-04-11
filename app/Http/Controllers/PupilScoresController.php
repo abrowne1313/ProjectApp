@@ -24,7 +24,7 @@ public function overview(pupildata $pupil)
         ->with('topic.scheme.subject')
         ->get();
 
-    // Group by Year → Subject
+    // Group by Year -> Subject
     $grouped = $scores->groupBy(function ($score) {
         return $score->topic->scheme->YearGroup;
     })->map(function ($yearGroup) {
@@ -75,10 +75,10 @@ public function saveScores(Request $request, $classId)
 
     $yearGroup = $class->YearGroup;
 
-    /* 
     
-       SAVE TARGETS
-    */
+    
+    //    SAVE TARGETS
+    
     $targets = $request->input('targets', []);
 
     foreach ($targets as $pupilId => $targetValue) {
@@ -99,9 +99,9 @@ public function saveScores(Request $request, $classId)
         );
     }
 
-    /* 
-       SAVE TOPIC SCORES
-    */
+    
+    //    SAVE TOPIC SCORES
+    
     $scores = $request->input('scores', []);
 
     foreach ($scores as $pupilId => $topics) {
