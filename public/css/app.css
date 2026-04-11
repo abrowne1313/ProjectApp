@@ -306,6 +306,28 @@ a:hover {
     margin: 0;
 }
 
+/*========================
+    TOPIC TITLES
+    ========================*/
+   th.rotate {
+    height: 140px;         
+    white-space: nowrap;   
+    vertical-align: bottom; 
+    padding-bottom: 10px;
+}
+
+th.rotate > div {
+    transform: rotate(-90deg);
+    width: 30px;            
+    margin-left: auto;
+    margin-right: auto;
+}
+
+th.rotate > div > span {
+    display: inline-block;
+    padding: 0 5px;
+}
+
 /* =========================
    SUBJECT TABS
 ========================= */

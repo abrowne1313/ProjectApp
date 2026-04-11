@@ -23,16 +23,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/tabulator-tables@5.5.0/dist/js/tabulator.min.js"></script>
 
-    <!-- <script src="{{ asset('js/live-search.js') }}"></script> -->
-
+   
     @yield('scripts')
 
     <script>
-// 1. Immediate Test: If you don't see this popup, the script isn't loading at all
-// alert('Script is active!'); 
+
 
 document.addEventListener('input', function (e) {
-    // 2. We use a global listener so it doesn't matter when the input appears
+   
     if (e.target && e.target.id === 'live-search') {
         const searchInput = e.target;
         const resultsBox = document.getElementById('search-results');

@@ -87,12 +87,14 @@ public function update(Request $request, ClassLists $class)
 {
     $request->validate([
         'ClassName'  => 'required|string|max:255',
+        'YearGroup'     => 'required|string|max:255',
         'Subject'    => 'required|string|max:255',
         'teacher_id' => 'required|exists:user_data,id',
     ]);
 
     $class->update($request->only([
         'ClassName',
+        'YearGroup',
         'Subject',
         'teacher_id',
     ]));

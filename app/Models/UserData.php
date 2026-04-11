@@ -21,18 +21,17 @@ class UserData extends Authenticatable
         'user_type',
     ];
 
-    // A teacher can have many classes
-    public function classes()
-    {
-        return $this->hasMany(ClassLists::class, 'teacher_id');
-    }
-
     public function type()
 {
    
     return $this->belongsTo(user_type::class, 'user_type', 'id');
 }
 
+    // A teacher can have many classes
+    public function classes()
+    {
+        return $this->hasMany(ClassLists::class, 'teacher_id');
+    }
 
     public function getAuthPassword()
     {

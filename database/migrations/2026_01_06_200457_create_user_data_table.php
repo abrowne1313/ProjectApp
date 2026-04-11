@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('user_data', function (Blueprint $table) {
             $table->id();
-
             $table->foreignId('user_type')
                     ->constrained('user_types')
-                    ->cascadeOnDelete();
-                    
+                    ->cascadeOnDelete();                
             $table->String('FirstName');
             $table->String('Surname');
             $table->String('password');

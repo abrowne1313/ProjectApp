@@ -8,36 +8,6 @@ use App\Models\PupilData;
 
 class SearchController extends Controller
 {
-    // public function search(Request $request)
-    // {
-    //     $request->validate([
-    //         'q' => 'required|string',
-    //         'type' => 'required|string'
-    //     ]);
-
-    //     $query = $request->q;
-    //     $type  = $request->type;
-    //     $user  = auth()->user();
-
-    //     // Standard users: pupils only
-    //     if ($user->user_type > 2 && $type !== 'pupils') {
-    //         abort(403);
-    //     }
-
-    //     if ($type === 'users') {
-    //         $results = UserData::where('FirstName', 'like', "%$query%")
-    //             ->orWhere('Surname', 'like', "%$query%")
-    //             ->get();
-    //     } else {
-    //         $results = PupilData::where('FirstName', 'like', "%$query%")
-    //             ->orWhere('Surname', 'like', "%$query%")
-    //             ->get();
-    //     }
-
-    //     return view('search.results', compact('results', 'type', 'query'));
-    // }
-
-
 
 public function live(Request $request)
 {
@@ -49,7 +19,6 @@ public function live(Request $request)
     }
 
     $results = [];
-
 // Pupils
     $pupils = PupilData::where(function($q) use ($query) {
             $q->where('FirstName', 'LIKE', '%' . $query . '%')
@@ -58,7 +27,7 @@ public function live(Request $request)
         ->limit(5)
         ->get();
 
-    // Map the results to ensure the JS can read the keys correctly
+    // Link results of pupil search to scores overview
     $results = $pupils->map(function($p) {
         return [
             'type'  => 'Pupil',
@@ -66,8 +35,7 @@ public function live(Request $request)
             'url'   => route('pupil.scores.overview', $p->id),
         ];
     })->values()->all();
-
-    // Users (admins only)
+    // Users (admins only)- links to userdata adminview for edits and password resets
     if ($user->user_type <= 2) {
         $users = UserData::where('FirstName', 'like', "%$query%")
             ->orWhere('Surname', 'like', "%$query%")
