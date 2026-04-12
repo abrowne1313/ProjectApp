@@ -10,7 +10,7 @@
     <strong>Created by:</strong>
     {{ $scheme->creator->FirstName }} {{ $scheme->creator->Surname }}
 </p>
-            @if(in_array(auth()->user()->user_type, [1, 2]))
+            @if(in_array(auth()->user()->user_type, [1, 2, 3]))
                  <a href="{{ route('scheme.edit', $scheme->id) }}"
                     class="btn-edit">
                     Edit

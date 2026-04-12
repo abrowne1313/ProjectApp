@@ -21,14 +21,12 @@
     @csrf
     @method('PUT')
     
+     <label for="FirstName">First Name:</label>
     <input type="text" name="FirstName" value="{{ old('FirstName', $pupil->FirstName) }}">
-         <label for="FirstName">First Name:</label>
-        <br><br>
-
-        <input type="text" id="Surname" name="Surname" value="{{ old('Surname', $pupil->Surname) }}">
+        
         <label for="Surname">Surname:</label>
-        <br><br>
-
+        <input type="text" id="Surname" name="Surname" value="{{ old('Surname', $pupil->Surname) }}">
+              
         <label for="YearGroup">Year Group:</label>
         <select id="YearGroup" name="YearGroup" value="{{ old('YearGroup', $pupil->YearGroup) }}" >
             <option value="8" {{ old('YearGroup', $pupil->YearGroup) == '8' ? 'selected' : '' }}>Year 8</option>
@@ -39,12 +37,10 @@
             <option value="13" {{ old('YearGroup', $pupil->YearGroup) == '13' ? 'selected' : '' }}>Year 13</option>
             <option value="14" {{ old('YearGroup', $pupil->YearGroup) == '14' ? 'selected' : '' }}>Year 14</option>
         </select>
-        <br><br>
-
+       
         <label for="DateOfBirth">Date of Birth:</label>
         <input type="date" id="DateOfBirth" name="DateOfBirth" value="{{ old('DateOfBirth', $pupil->DateOfBirth) }}" >
-        <br><br>
-
+       
         <label for="Gender">Gender:</label>
         <select id="Gender" name="Gender" value="{{ old('Gender', $pupil->Gender) }}">
             <option value="">-- Select Gender --</option>
@@ -53,20 +49,16 @@
             <option value="Non-Binary" {{ old('Gender', $pupil->Gender) == 'Non-Binary' ? 'selected' : '' }}>Non-Binary</option>
             <option value="Prefer not to say" {{ old('Gender', $pupil->Gender) == 'Prefer not to say' ? 'selected' : '' }}>Prefer not to say</option>
         </select>
-        <br><br>
-
+       
         <label for="FormClass">Form Class:</label>
         <input type="text" id="FormClass" name="FormClass" value="{{ old('FormClass', $pupil->FormClass) }}" >
-        <br><br>
-
+       
         <label for="SEN">SEN:</label>
         <input type="text" id="SEN" name="SEN" value="{{ old('SEN', $pupil->SEN) }}">
-        <br><br>
-
+        
         <label for="Medical">Medical:</label>
         <input type="text" id="Medical" name="Medical" value="{{ old('Medical', $pupil->Medical) }}">
-        <br><br>   
-    
+        
     
     
     <button type="submit">Update Pupil</button>
