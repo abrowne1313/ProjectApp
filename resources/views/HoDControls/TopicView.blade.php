@@ -15,7 +15,7 @@
             <h3 class="h5 mb-0">Edit Revision List</h3>
         </div>
         <div class="card-body">
-            {{-- Ensure BOTH content and URL are inside this form --}}
+            
             <form method="POST" action="{{ route('revisionlists.save', $topic->id) }}">
                 @csrf
                 
