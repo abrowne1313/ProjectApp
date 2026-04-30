@@ -75,37 +75,37 @@
 
 @foreach ($topicData as $item)
 <div class="topic-card">
-    <div class="topic-header">
-        <table class="header-table">
-            <tr>
-                <td>
-                    <h3 class="topic-title">{{ $item['topic']->Title }}</h3>
-                </td>
-                <td style="text-align: right; width: 100px;">
-                    <span class="score-pill-inline">Score: {{ $item['score'] }}%</span>
-                </td>
-            </tr>
-        </table>
+<div class="topic-header">
+    <table class="header-table">
+    <tr>
+         <td>
+             <h3 class="topic-title">{{ $item['topic']->Title }}</h3>
+         </td>
+        <td style="text-align: right; width: 100px;">
+         <span class="score-pill-inline">Score: {{ $item['score'] }}%</span>
+        </td>
+    </tr>
+    </table>
     </div>
     
     <div class="content-body">
         <table class="layout-table">
-            <tr>
-                <td class="text-cell">
-                    <div class="rich-text">
-                        {!! $item['revisionlist'] !!}
-                    </div>
-                </td>
+     <tr>
+         <td class="text-cell">
+    <div class="rich-text">
+            {!! $item['revisionlist'] !!}
+    </div>
+        </td>
                 
-                @if(!empty($item['url']))
-                <td class="qr-cell">
-                    <div class="qr-image">
-                        <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(85)->margin(0)->generate($item['url'])) !!} ">
-                    </div>
-                    <div class="qr-caption">Resource</div>
-                </td>
+         @if(!empty($item['url']))
+        <td class="qr-cell">
+    <div class="qr-image">
+      <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(85)->margin(0)->generate($item['url'])) !!} ">
+     </div>
+    <div class="qr-caption">Resource</div>
+        </td>
                 @endif
-            </tr>
+         </tr>
         </table>
     </div>
 </div>

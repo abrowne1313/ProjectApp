@@ -16,7 +16,7 @@ class PupilDataController extends Controller
      */
     public function CreatePupilForm()
     {
-        return view('admincontrols/createpupil');
+        return view('AdminControls/CreatePupil');
     }
 
 
@@ -71,7 +71,7 @@ public function edit($id)
 
     $pupil = PupilData::findOrFail($id);
 
-    return view('admincontrols.EditPupil', compact('pupil'));
+    return view('AdminControls.EditPupil', compact('pupil'));
 }
 
 /**

@@ -19,7 +19,7 @@ class SchemesController extends Controller
      */
 public function create()
 {
-    $subject = Subject::where('HoD_Teacher_id', auth()->id())->firstOrFail();
+    $subject = Subject::where('HoD_Teacher_id', auth()->id())->first();
     return view('HoDControls.CreateScheme', compact('subject'));
 }
 

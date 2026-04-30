@@ -34,7 +34,7 @@ class UserDataTest extends TestCase
         $routes = [
             '/admin',
             '/user_manager',
-            '/createuser',
+            '/create-user',
             '/admin/users/1/edit',
             '/admin/users/search',
             '/change-password/1',

@@ -39,7 +39,7 @@ protected function setUp(): void
         $this->actingAs($admin)
             ->get(route('pupil.manager'))
             ->assertStatus(200)
-            ->assertViewIs('admincontrols.PupilManager')
+            ->assertViewIs('Admincontrols.PupilManager')
             ->assertViewHas('pupils');
     }
 
