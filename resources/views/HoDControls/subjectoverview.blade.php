@@ -9,9 +9,9 @@
             <h1 class="h2 text-dark mb-1">{{ $activeSubject->Subject }} Department</h1>
             <p class="text-muted">Manage schemes of work and revision topics</p>
         </div>
-        <a href="{{ route('schemes.create') }}" class="btn btn-primary shadow-sm">
-            <i class="bi bi-plus-lg"></i> Create New Scheme
-        </a>
+            <a href="{{ route('schemes.create', ['subject_id' => $activeSubject->id]) }}" class="btn btn-primary shadow-sm">
+                <i class="bi bi-plus-lg"></i> Create New Scheme
+            </a>
     </div>
 
     {{-- Subject Selector: Only visible for Admin (1) or centre admin (2) --}}

@@ -17,9 +17,22 @@ class SchemesController extends Controller
     /**
      * Show the form for creating a new scheme.
      */
-public function create()
+public function create(Request $request)
 {
-    $subject = Subject::where('HoD_Teacher_id', auth()->id())->first();
+       $subjectId = $request->query('subject_id');
+
+    if ($subjectId) {
+        $subject = Subject::find($subjectId);
+    } else {
+        // if subject not found, use HoD relationship with subject to find create scheme
+        $subject = Subject::where('HoD_Teacher_id', auth()->id())->first();
+    }
+
+    // erro handling if nothing found
+    if (!$subject) {
+        return redirect()->back()->with('error', 'Unable to determine your department. Please contact an admin.');
+    }
+
     return view('HoDControls.CreateScheme', compact('subject'));
 }
 
