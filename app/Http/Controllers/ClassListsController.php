@@ -185,17 +185,11 @@ public function destroy(ClassLists $class)
 // }
 public function pupils($classId)
 {
-    // Load class + pupils
-    $class = ClassLists::with('pupils')->findOrFail($classId);
+     $class = ClassLists::with('pupils')->findOrFail($classId);
 
-    // Convert subject NAME to subject ID
+  
     $subject = Subject::where('Subject', $class->Subject)
-    ->with(['schemes.topics' => function ($query) {
-           // Put topics in teaching order which can change, rather than topic id
-           $query->orderBy('TeachingOrder', 'asc');
-        }])   
-    
-    ->first();
+  ->first();
 
     if (!$subject) {
         return view('ClassPupilList', [
@@ -209,6 +203,14 @@ public function pupils($classId)
 
     $subjectId = $subject->id;
     $yearGroup = $class->YearGroup;
+
+    $scheme = Schemes::where('Subject_id', $subjectId)
+                     ->where('YearGroup', $yearGroup)
+                      // Put topics in teaching order which can change, rather than topic id
+                     ->with(['topics' => function ($query) {
+                         $query->orderBy('TeachingOrder', 'asc');
+                     }])
+                     ->first();
 
     // Load the scheme for this subject & year
     $scheme = Schemes::where('Subject_id', $subjectId)
