@@ -189,7 +189,13 @@ public function pupils($classId)
     $class = ClassLists::with('pupils')->findOrFail($classId);
 
     // Convert subject NAME to subject ID
-    $subject = Subject::where('Subject', $class->Subject)->first();
+    $subject = Subject::where('Subject', $class->Subject)
+    ->with(['schemes.topics' => function ($query) {
+           // Put topics in teaching order which can change, rather than topic id
+           $query->orderBy('TeachingOrder', 'asc');
+        }])   
+    
+    ->first();
 
     if (!$subject) {
         return view('ClassPupilList', [
