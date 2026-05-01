@@ -103,7 +103,7 @@ Route::get('/pupils/{pupil}/scores/{year}/{subject}', [PupilScoresController::cl
 Route::get('/pupils/{pupil}/subject/{subjectID}/revision-pack',[PupilScoresController::class, 'revisionPack']) 
 ->name('pupil.revisionpack');
 
-
+Route::get('/schemes/{id}', [SchemesController::class, 'show']) ->name('schemes.show');
     
 });
 
@@ -231,7 +231,7 @@ Route::get('/SubjectOverview', [SubjectController::class, 'SubjectOverview']) ->
 //HoD Scheme creation routes
 Route::get('/HoDControls/CreateScheme', [SchemesController::class, 'create'])->name('schemes.create');
 Route::post('/schemes', [SchemesController::class, 'store']);
-Route::get('/schemes/{id}', [SchemesController::class, 'show']) ->name('schemes.show');
+
 Route::get('/scheme/{id}/edit', [SchemesController::class, 'edit']) ->name('scheme.edit');
 Route::put('/schemes/{id}', [SchemesController::class, 'update'])->name('schemes.update');
 
