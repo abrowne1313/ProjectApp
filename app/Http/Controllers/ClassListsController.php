@@ -218,8 +218,8 @@ public function pupils($classId)
                      ->with('topics')
                      ->first();
 
-    $topics = $scheme ? $scheme->topics : collect();
-
+   $topics = $scheme ? $scheme->topics->sortBy('TeachingOrder')->values() : collect();
+   
     // Load scores
     $scores = PupilScores::whereIn('Pupil_id', $class->pupils->pluck('id'))
         ->get()
