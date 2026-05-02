@@ -27,22 +27,16 @@ public function getAuthPassword()
     }
 
 // Tell larael to use UserEmail and not email when logging in
-public function getAuthIdentifierName()
-{return 'UserEmail';
-}
+// public function getAuthIdentifierName()
+// {return 'UserEmail';
+// }
 
  public function getEmailForPasswordReset()
     {
         return $this->UserEmail;
     }
 
-    public function userData()
-{
-    return $this->hasOne(
-        UserData::class,
-        'id',   // foreign key on user_data table
-         );
-}
+
 
 
 }
