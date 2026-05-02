@@ -230,7 +230,7 @@ Route::get('/SubjectOverview', [SubjectController::class, 'SubjectOverview']) ->
 
 //HoD Scheme creation routes
 Route::get('/HoDControls/CreateScheme', [SchemesController::class, 'create'])->name('schemes.create');
-Route::post('/schemes', [SchemesController::class, 'store']);
+Route::post('/schemes', [SchemesController::class, 'store'])->name('schemes.store');
 
 Route::get('/scheme/{id}/edit', [SchemesController::class, 'edit']) ->name('scheme.edit');
 Route::put('/schemes/{id}', [SchemesController::class, 'update'])->name('schemes.update');

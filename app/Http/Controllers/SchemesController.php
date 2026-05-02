@@ -43,6 +43,7 @@ public function create(Request $request)
 public function store(Request $request)
 {
 $request->validate([
+    'subject_id' => 'required|exists:subjects,id',
     'YearGroup' => 'required|integer',
     'topics' => 'required|array',
     'topics.*' => 'required|string',
@@ -52,8 +53,8 @@ $request->validate([
 ]);
 
 
-    $subject = Subject::where('HoD_Teacher_id', auth()->id())->firstOrFail();
-
+    $subject = Subject::findOrFail($request->subject_id);
+    
     $scheme = Schemes::create([
         'Subject_id' => $subject->id,
         'YearGroup' => $request->YearGroup,

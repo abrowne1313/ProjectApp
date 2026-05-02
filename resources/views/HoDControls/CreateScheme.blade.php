@@ -6,9 +6,9 @@
 @section('content')  
  <h1>Create Scheme for {{ $subject->Subject }}</h1>
 
-<form method="POST" action="/schemes">
+<form method="POST" action="{{ route('schemes.store') }}">
     @csrf
-
+    <input type="hidden" name="subject_id" value="{{ $subject->id }}">
     <label>Year Group</label>
     <select name="YearGroup" required>
         <option value="">Select</option>
